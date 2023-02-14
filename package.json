@@ -1,0 +1,21 @@
+{
+  "name": "11ty-starter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=development npx eleventy --serve",
+    "production": "NODE_ENV=production eleventy"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.0",
+    "sass": "^1.58.1"
+  }
+}
