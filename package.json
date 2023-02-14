@@ -16,6 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "@11ty/eleventy": "^2.0.0",
+    "axe-core": "^4.6.3",
+    "puppeteer": "^19.6.3",
     "sass": "^1.58.1"
   }
 }
