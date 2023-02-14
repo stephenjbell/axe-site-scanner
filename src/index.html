@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>11ty 2.0 test site!</title>
+    <title>{{site.name}}</title>
     <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
     <h1>{{site.name}}</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas quo adipisci ad illo doloremque deserunt dolorum aut enim cupiditate reprehenderit omnis ipsum saepe obcaecati est praesentium ducimus, ut ea maiores in molestias dolorem rerum, unde error ex. Alias recusandae voluptatem, ea ipsum maiores quasi, incidunt porro, aliquam labore facilis est.</p>
+    <pre>
+    {{scanner|dump(4)}}
+    </pre>
+    {# <pre>
+    {{scanner.violations|dump(2)}}
+    </pre> #}
 </body>
 </html>
