@@ -9,6 +9,18 @@
 </head>
 <body>
     <h1>{{site.name}}</h1>
+    <ul>
+        <li>
+            {{scanner.results.testEngine.name}} {{scanner.results.testEngine.version}}
+        </li>
+        <li>
+            {{scanner.results.url}}
+        </li>
+        <li>
+            {{scanner.results.timestamp}}
+        </li>
+    <ul>
+
     <pre>
     {{scanner|dump(4)}}
     </pre>

@@ -4,8 +4,6 @@ const { parse: parseURL } = require('url')
 const assert = require('assert')
 
 module.exports = async function () {
-  // Output the current version of axe-core
-  console.log('Running axe-core:', axeCore.version)
 
   // Most of this code based on https://github.com/dequelabs/axe-core/tree/develop/doc/examples/puppeteer
 
@@ -58,9 +56,7 @@ module.exports = async function () {
     return results
   }
 
-  let output = {};
-
-  output = main(url)
+  let axeResults = await main(url)
     .then((results) => {
         // Return the results
         return results;
@@ -70,5 +66,14 @@ module.exports = async function () {
       process.exit(1)
     })
 
-    return output;
+    // Remove axeResults.inapplicable and axeResults.passes
+    delete axeResults.inapplicable;
+    delete axeResults.passes;
+
+    let something = "Hey";
+
+    return {
+        "something": something,
+        "results": axeResults,
+    }
 }
