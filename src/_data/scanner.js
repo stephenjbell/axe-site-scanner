@@ -4,7 +4,6 @@ const { parse: parseURL } = require('url')
 const assert = require('assert')
 
 module.exports = async function () {
-
   // Most of this code based on https://github.com/dequelabs/axe-core/tree/develop/doc/examples/puppeteer
 
   const myUrl = 'https://steedgood.com'
@@ -31,12 +30,16 @@ module.exports = async function () {
       await page.goto(url)
 
       // Inject and run axe-core
+      // Set options using https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter
       const handle = await page.evaluateHandle(`
-            // Inject axe source code
-            ${axeCore.source}
-            // Run axe
-            axe.run()
-        `)
+        // Inject axe source code
+        ${axeCore.source}
+        // Run axe
+        axe.run({
+            ancestry: true,
+            reporter: 'v2',
+        })
+    `)
 
       // Get the results from `axe.run()`.
       results = await handle.jsonValue()
@@ -58,22 +61,22 @@ module.exports = async function () {
 
   let axeResults = await main(url)
     .then((results) => {
-        // Return the results
-        return results;
+      // Return the results
+      return results
     })
     .catch((err) => {
       console.error('Error running axe-core:', err.message)
       process.exit(1)
     })
 
-    // Remove axeResults.inapplicable and axeResults.passes
-    delete axeResults.inapplicable;
-    delete axeResults.passes;
+  // Remove axeResults.inapplicable and axeResults.passes
+  delete axeResults.inapplicable
+  delete axeResults.passes
 
-    let something = "Hey";
+  let something = 'Hey'
 
-    return {
-        "something": something,
-        "results": axeResults,
-    }
+  return {
+    something: something,
+    results: axeResults,
+  }
 }
