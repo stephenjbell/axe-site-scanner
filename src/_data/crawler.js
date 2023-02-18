@@ -14,7 +14,6 @@ module.exports = async function () {
         console.log(error)
       } else {
         var $ = res.$
-        // console.log('TITLE: ' + $('title').text())
 
         // Find all links on the page
         $('a').each(function () {
@@ -72,10 +71,11 @@ module.exports = async function () {
 
   c.queue(startUrl)
 
-  c.on('drain', function () {
-    console.log(visitedUrls)
+  // Wrap the Crawler in a Promise
+  return new Promise(resolve => {
+    c.on('drain', function () {
+      console.log(visitedUrls)
+      resolve(visitedUrls)
+    })
   })
-
-  // TODO - Figure out how to return the visitedUrls array
-  return visitedUrls
 }
