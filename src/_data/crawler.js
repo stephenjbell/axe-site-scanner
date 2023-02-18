@@ -15,55 +15,63 @@ module.exports = async function () {
       } else {
         var $ = res.$
 
-        // Find all links on the page
-        $('a').each(function () {
-          var link = $(this).attr('href')
+        // Check if the response is a valid HTML document
+        if (/^text\/html/.test(res.headers['content-type'])) {
 
-          // If the link starts with /, add the domain url
-          if (link && link.startsWith('/')) {
-            link = domainUrl + link
-          }
+          // Check if the URL has redirected or returned a 404 status
+          if (res.statusCode === 200 && !res.request.uri.href.includes('/404')) {
 
-          // Strip off anything after a hash
-          if (link.indexOf('#') > -1) {
-            link = link.substring(0, link.indexOf('#'))
-          }
+            // Find all links on the page
+            $('a').each(function () {
+              var link = $(this).attr('href')
 
-          // Exclude links that are non-document files
-          let excludeExtensions = [
-            '.pdf',
-            '.doc',
-            '.docx',
-            '.xls',
-            '.xlsx',
-            '.ppt',
-            '.pptx',
-            '.zip',
-            '.rar',
-            '.7z',
-            '.mp3',
-            '.mp4',
-            '.mov',
-            '.avi',
-            '.wmv',
-            '.jpg',
-            '.jpeg',
-            '.png',
-            '.gif',
-            '.svg',
-          ]
-          if (excludeExtensions.some((ext) => link.endsWith(ext))) {
-            link = null
-          }
+              // If the link starts with /, add the domain url
+              if (link && link.startsWith('/')) {
+                link = domainUrl + link
+              }
 
-          // Only follow links that start with baseUrl, and that we haven't already visited
-          if (link && link.startsWith(baseUrl) && !visitedUrls.includes(link)) {
-            visitedUrls.push(link)
-            console.log('PAGELIST LENGTH' + visitedUrls.length)
-            console.log('QUEUEING ' + link)
-            c.queue(link)
+              // Strip off anything after a hash
+              if (link.indexOf('#') > -1) {
+                link = link.substring(0, link.indexOf('#'))
+              }
+
+              // Exclude links that are non-document files
+              let excludeExtensions = [
+                '.pdf',
+                '.doc',
+                '.docx',
+                '.xls',
+                '.xlsx',
+                '.ppt',
+                '.pptx',
+                '.zip',
+                '.rar',
+                '.7z',
+                '.mp3',
+                '.mp4',
+                '.mov',
+                '.avi',
+                '.wmv',
+                '.jpg',
+                '.jpeg',
+                '.png',
+                '.gif',
+                '.svg',
+              ]
+              if (excludeExtensions.some((ext) => link.endsWith(ext))) {
+                link = null
+              }
+
+              // Only follow links that start with baseUrl, and that we haven't already visited
+              if (link && link.startsWith(baseUrl) && !visitedUrls.includes(link)) {
+                visitedUrls.push(link)
+                console.log('PAGELIST LENGTH' + visitedUrls.length)
+                console.log('QUEUEING ' + link)
+                c.queue(link)
+              }
+            })
           }
-        })
+        }
       }
       done()
     },
