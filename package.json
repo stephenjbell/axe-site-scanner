@@ -17,7 +17,8 @@
   "dependencies": {
     "@11ty/eleventy": "^2.0.0",
     "axe-core": "^4.6.3",
-    "puppeteer": "^19.6.3",
-    "sass": "^1.58.1"
+    "crawler": "^1.4.0",
+    "puppeteer": "^19.7.1",
+    "sass": "^1.58.2"
   }
 }
