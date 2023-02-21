@@ -65,8 +65,7 @@ module.exports = async function () {
               // Only follow links that start with baseUrl, and that we haven't already visited
               if (link && link.startsWith(baseUrl) && !visitedUrls.includes(link)) {
                 visitedUrls.push(link)
-                console.log('PAGELIST LENGTH' + visitedUrls.length)
-                console.log('QUEUEING ' + link)
+                console.log('visitedUrls:' + visitedUrls.length)
                 c.queue(link)
               }
             })
@@ -82,7 +81,7 @@ module.exports = async function () {
   // Wrap the Crawler in a Promise
   return new Promise(resolve => {
     c.on('drain', function () {
-      console.log(visitedUrls)
+      visitedUrls.sort()
       resolve(visitedUrls)
     })
   })

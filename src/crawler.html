@@ -5,10 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{site.name}}</title>
-    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
     <h1>{{site.name}}</h1>
-    {{crawler|dump}}
+
+    <ol>
+        {% for url in crawler %}
+            <li>
+                <a href="{{url}}">{{url}}</a>
+            </li>
+        {% endfor %}
+    </ol>
 </body>
 </html>
