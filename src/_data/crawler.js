@@ -17,6 +17,8 @@ module.exports = async function () {
 
   let c = new Crawler({
     maxConnections: 10,
+    retryTimeout: 3000, // Wait 3 seconds before retrying instead of 10
+    retries: 1,
     callback: function (error, res, done) {
       if (error) {
         console.log(error)
@@ -50,12 +52,12 @@ module.exports = async function () {
               }
 
               // Strip off anything after a hash
-              if (link_href.indexOf('#') > -1) {
+              if (link_href && link_href.indexOf('#') > -1) {
                 link_href = link_href.substring(0, link_href.indexOf('#'))
               }
 
               // Strip off anything after a question mark
-              if (link_href.indexOf('?') > -1) {
+              if (link_href && link_href.indexOf('?') > -1) {
                 link_href = link_href.substring(0, link_href.indexOf('?'))
               }
 
@@ -82,7 +84,21 @@ module.exports = async function () {
                 '.gif',
                 '.svg',
               ]
-              if (excludeExtensions.some((ext) => link_href.endsWith(ext))) {
+              if (link_href && excludeExtensions.some((ext) => link_href.endsWith(ext))) {
+                link_href = null
+              }
+
+              // If a link starts with a string from our list, exclude it
+              let excludeProtocols = [
+                'mailto:',
+                'tel:',
+                'ftp:',
+                'javascript:',
+                'skype:',
+                'whatsapp:',
+                'webcal:',
+              ]
+              if (link_href && excludeProtocols.some((str) => link_href.startsWith(str))) {
                 link_href = null
               }
 
@@ -95,7 +111,8 @@ module.exports = async function () {
                   innav: inNav 
                 })
 
-                console.log('visitedUrls:' + visitedUrls.length)
+                console.log('visitedUrls:' + visitedUrls.length + " Queued:" + c.queueSize)
+
                 c.queue(link_href)
               }
             })
