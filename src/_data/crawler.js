@@ -8,11 +8,12 @@ const crawlStartUrl = process.env.CRAWL_START_URL || 'https://steedgood.com/' //
 const urlsMustContain = process.env.URLS_MUST_CONTAIN || 'steedgood.com' // Only search links that contain this
 const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
 const number_of_pages = process.env.NUMBER_OF_PAGES || 3
+const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 100
 
 
 module.exports = async function () {
 
-  let visitedUrls = []
+  let urlList = []
   let pagesInfo = []
 
   let c = new Crawler({
@@ -32,6 +33,8 @@ module.exports = async function () {
           // Check if the URL has redirected or returned a 404 status
           if (res.statusCode === 200 && !res.request.uri.href.includes('/404')) {
 
+            console.log("  Queued: "+ c.queueSize +"  Visiting: " + res.request.uri.href)
+
             // Find all links on the page
             $('a').each(function () {
               
@@ -45,6 +48,11 @@ module.exports = async function () {
 
               // Get the link href
               let link_href = $(this).attr('href')
+
+              // If the link starts with //, add "https:"
+              if (link_href && link_href.startsWith('//')) {
+                link_href = "https:" + link_href
+              }
 
               // If the link starts with /, add the domain url
               if (link_href && link_href.startsWith('/')) {
@@ -85,7 +93,7 @@ module.exports = async function () {
                 '.svg',
               ]
               if (link_href && excludeExtensions.some((ext) => link_href.endsWith(ext))) {
-                link_href = null
+                return false
               }
 
               // If a link starts with a string from our list, exclude it
@@ -99,19 +107,20 @@ module.exports = async function () {
                 'webcal:',
               ]
               if (link_href && excludeProtocols.some((str) => link_href.startsWith(str))) {
-                link_href = null
+                return false
               }
 
               // Only follow links that start with urlMustContain, and that we haven't already visited
-              if (link_href && link_href.includes(urlsMustContain) && !visitedUrls.includes(link_href)) {
+              // and if we haven't passed the max number of pages to crawl
+              if (link_href && link_href.includes(urlsMustContain) && !urlList.includes(link_href) && urlList.length < max_pages_to_crawl) {
 
-                visitedUrls.push(link_href)
+                urlList.push(link_href)
                 pagesInfo.push({ 
                   url: link_href, 
                   innav: inNav 
                 })
 
-                console.log('visitedUrls:' + visitedUrls.length + " Queued:" + c.queueSize)
+                // console.log('urlList.length:' + urlList.length)
 
                 c.queue(link_href)
               }
@@ -128,6 +137,9 @@ module.exports = async function () {
   // Do all this when the crawler is finished
   return new Promise(resolve => {
     c.on('drain', function () {
+
+      // Set the first page we scanned to be "in nav" (important)
+      pagesInfo[0].innav = true
 
       // Remove trailing slash from all urls
       pagesInfo.forEach((page) => {
@@ -153,6 +165,8 @@ module.exports = async function () {
           return 1;
         }
       });
+
+      console.log("Pages crawled: " + pagesInfo.length)
 
       resolve(pagesInfo)
     })
