@@ -9,8 +9,6 @@ const urlsMustContain = process.env.URLS_MUST_CONTAIN || 'steedgood.com' // Only
 const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
 const number_of_pages = process.env.NUMBER_OF_PAGES || 3
 
-console.log("'" + urlsMustContain + "'")
-
 
 module.exports = async function () {
 
@@ -28,6 +26,7 @@ module.exports = async function () {
         // Check if the response is a valid HTML document
         if (/^text\/html/.test(res.headers['content-type'])) {
 
+          // TODO: This still isn't able to detect if the page redirects before it 200 OKs
           // Check if the URL has redirected or returned a 404 status
           if (res.statusCode === 200 && !res.request.uri.href.includes('/404')) {
 
@@ -87,13 +86,9 @@ module.exports = async function () {
                 link_href = null
               }
 
-              console.log("includes" + link_href.includes(urlsMustContain))
-
-
               // Only follow links that start with urlMustContain, and that we haven't already visited
               if (link_href && link_href.includes(urlsMustContain) && !visitedUrls.includes(link_href)) {
 
-                console.log("HEY")
                 visitedUrls.push(link_href)
                 pagesInfo.push({ 
                   url: link_href, 
