@@ -10,10 +10,19 @@
 <body>
     <h1>{{site.name}}</h1>
 
+    {# <pre>
+    {{crawler|dump(2)}}
+    </pre> #}
+
     <ol>
-        {% for url in crawler %}
+        {% for page in crawler %}
             <li>
-                <a href="{{url}}">{{url}}</a>
+                <a href="{{page.url}}">
+                    {{page.url}}
+                    {%- if page.innav == true -%}
+                        *
+                    {%- endif -%}
+                </a>
             </li>
         {% endfor %}
     </ol>

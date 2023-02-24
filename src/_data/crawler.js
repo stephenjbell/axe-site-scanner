@@ -1,13 +1,23 @@
-var Crawler = require('crawler')
+const Crawler = require('crawler')
+const AssetCache = require("@11ty/eleventy-fetch");
+const dotenv = require('dotenv')
+dotenv.config()
+
+const domainUrl = process.env.DOMAIN_URL || 'https://steedgood.com' // Used to add domain to relative links
+const crawlStartUrl = process.env.CRAWL_START_URL || 'https://steedgood.com/' // Where we begin crawling
+const urlsMustContain = process.env.URLS_MUST_CONTAIN || 'steedgood.com' // Only search links that contain this
+const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
+const number_of_pages = process.env.NUMBER_OF_PAGES || 3
+
+console.log("'" + urlsMustContain + "'")
+
 
 module.exports = async function () {
-  var domainUrl = 'https://usvisagroup.com'
-  var startUrl = 'https://usvisagroup.com/'
-  var baseUrl = 'https://usvisagroup.com/'
 
-  var visitedUrls = []
+  let visitedUrls = []
+  let pagesInfo = []
 
-  var c = new Crawler({
+  let c = new Crawler({
     maxConnections: 10,
     callback: function (error, res, done) {
       if (error) {
@@ -23,16 +33,31 @@ module.exports = async function () {
 
             // Find all links on the page
             $('a').each(function () {
-              var link = $(this).attr('href')
+              
+              // Check if the link is in the top menu
+              let inNav = false
+
+              // If the link is "nav a" that isn't in <main>
+              if($(this).is("nav a") && !$(this).parents("main").length){
+                inNav = true
+              }
+
+              // Get the link href
+              let link_href = $(this).attr('href')
 
               // If the link starts with /, add the domain url
-              if (link && link.startsWith('/')) {
-                link = domainUrl + link
+              if (link_href && link_href.startsWith('/')) {
+                link_href = domainUrl + link_href
               }
 
               // Strip off anything after a hash
-              if (link.indexOf('#') > -1) {
-                link = link.substring(0, link.indexOf('#'))
+              if (link_href.indexOf('#') > -1) {
+                link_href = link_href.substring(0, link_href.indexOf('#'))
+              }
+
+              // Strip off anything after a question mark
+              if (link_href.indexOf('?') > -1) {
+                link_href = link_href.substring(0, link_href.indexOf('?'))
               }
 
               // Exclude links that are non-document files
@@ -58,15 +83,25 @@ module.exports = async function () {
                 '.gif',
                 '.svg',
               ]
-              if (excludeExtensions.some((ext) => link.endsWith(ext))) {
-                link = null
+              if (excludeExtensions.some((ext) => link_href.endsWith(ext))) {
+                link_href = null
               }
 
-              // Only follow links that start with baseUrl, and that we haven't already visited
-              if (link && link.startsWith(baseUrl) && !visitedUrls.includes(link)) {
-                visitedUrls.push(link)
+              console.log("includes" + link_href.includes(urlsMustContain))
+
+
+              // Only follow links that start with urlMustContain, and that we haven't already visited
+              if (link_href && link_href.includes(urlsMustContain) && !visitedUrls.includes(link_href)) {
+
+                console.log("HEY")
+                visitedUrls.push(link_href)
+                pagesInfo.push({ 
+                  url: link_href, 
+                  innav: inNav 
+                })
+
                 console.log('visitedUrls:' + visitedUrls.length)
-                c.queue(link)
+                c.queue(link_href)
               }
             })
           }
@@ -76,13 +111,38 @@ module.exports = async function () {
     },
   })
 
-  c.queue(startUrl)
+  c.queue(crawlStartUrl)
 
-  // Wrap the Crawler in a Promise
+  // Do all this when the crawler is finished
   return new Promise(resolve => {
     c.on('drain', function () {
-      visitedUrls.sort()
-      resolve(visitedUrls)
+
+      // Remove trailing slash from all urls
+      pagesInfo.forEach((page) => {
+        page.url = page.url.replace(/\/$/, '')
+      })
+
+      // Remove pages with duplicate URLs
+      pagesInfo = pagesInfo.filter((page, index, self) =>
+        index === self.findIndex((t) => (
+          t.url === page.url
+        ))
+      )
+
+      // Sort pages info to put "innav" pages first, then sort by URL
+      pagesInfo.sort(function(a, b) {
+        if (a.innav === b.innav) {
+          return a.url.localeCompare(b.url);
+        }
+        else if (a.innav) {
+          return -1;
+        }
+        else {
+          return 1;
+        }
+      });
+
+      resolve(pagesInfo)
     })
   })
 }
