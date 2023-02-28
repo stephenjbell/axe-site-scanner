@@ -27,7 +27,13 @@ module.exports = async function () {
 
       // Get new page
       const page = await browser.newPage()
-      await page.goto(url)
+      const response = await page.goto(url)
+
+      if (response.status() !== 200) {
+        console.warn(
+          `Received status code ${response.status()} for ${url}.`
+        )
+      }
 
       // Inject and run axe-core
       // Set options using https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter
