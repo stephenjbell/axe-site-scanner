@@ -8,10 +8,10 @@ const crawlStartUrl = process.env.CRAWL_START_URL || 'https://steedgood.com/' //
 const urlsMustContain = process.env.URLS_MUST_CONTAIN || 'steedgood.com' // Only search links that contain this
 const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
 const number_of_pages = process.env.NUMBER_OF_PAGES || 3
-const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 100
+const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 5
 
 
-module.exports = async function () {
+module.exports = { async crawlSite () {
 
   let urlList = []
   let pagesInfo = []
@@ -171,4 +171,5 @@ module.exports = async function () {
       resolve(pagesInfo)
     })
   })
+}
 }

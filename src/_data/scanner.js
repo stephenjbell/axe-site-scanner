@@ -3,6 +3,21 @@ const axeCore = require('axe-core')
 const { parse: parseURL } = require('url')
 const assert = require('assert')
 
+const crawler = require('./crawler.js');
+
+async function crawlSite() {
+  try {
+    const results = await crawler.crawlSite();
+    console.log(results);
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+crawlSite();
+
+
 module.exports = async function () {
   // Most of this code based on https://github.com/dequelabs/axe-core/tree/develop/doc/examples/puppeteer
 
