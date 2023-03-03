@@ -1,17 +1,28 @@
 const Crawler = require('crawler')
-const AssetCache = require("@11ty/eleventy-fetch");
+const {AssetCache} = require("@11ty/eleventy-fetch");
 const dotenv = require('dotenv')
 dotenv.config()
 
 const domainUrl = process.env.DOMAIN_URL || 'https://steedgood.com' // Used to add domain to relative links
 const crawlStartUrl = process.env.CRAWL_START_URL || 'https://steedgood.com/' // Where we begin crawling
 const urlsMustContain = process.env.URLS_MUST_CONTAIN || 'steedgood.com' // Only search links that contain this
-const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
-const number_of_pages = process.env.NUMBER_OF_PAGES || 3
+// const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
+// const number_of_pages = process.env.NUMBER_OF_PAGES || 3
 const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 5
 
 
 module.exports = { async crawlSite () {
+
+  // Cache the crawl results
+  let assetString = `${crawlStartUrl} ${urlsMustContain} ${domainUrl} ${max_pages_to_crawl}`;
+  let asset = new AssetCache( assetString );
+
+  // check if the cache is fresh within the last day
+  if(asset.isCacheValid("1d")) {
+    // return cached data.
+    return asset.getCachedValue(); // a promise
+  }
+
 
   let urlList = []
   let pagesInfo = []
@@ -167,6 +178,8 @@ module.exports = { async crawlSite () {
       });
 
       console.log("Pages crawled: " + pagesInfo.length)
+
+      asset.save(pagesInfo, "json");
 
       resolve(pagesInfo)
     })
