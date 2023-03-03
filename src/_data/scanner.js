@@ -3,35 +3,21 @@ const axeCore = require('axe-core')
 const { parse: parseURL } = require('url')
 const assert = require('assert')
 
-const crawler = require('./crawler.js');
+const crawler = require('./crawler.js')
 
 async function crawlSite() {
   try {
-    const results = await crawler.crawlSite();
-    return results;
+    const results = await crawler.crawlSite()
+    return results
 
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 }
 
-// crawlSite().then((results) => {
-//   console.log(results)
-// })
-
-
 module.exports = async function () {
-  // Most of this code based on https://github.com/dequelabs/axe-core/tree/develop/doc/examples/puppeteer
-
   // Get list of urls using crawlSite()
   let pages = await crawlSite()
-
-  for (let page of pages) {
-    console.log(page.url)
-  }
-
-
-  const myUrl = 'https://steedgood.com'
 
   // Cheap URL validation
   const isValidURL = (input) => {
@@ -39,25 +25,26 @@ module.exports = async function () {
     return u.protocol && u.host
   }
 
-  // node axe-puppeteer.js <url>
-  const url = myUrl
-  assert(isValidURL(url), 'Invalid URL')
+  // Setup Puppeteer
+  const browser = await puppeteer.launch()
 
-  const main = async (url) => {
-    let browser
-    let results
+  // Array to hold axe results for each URL
+  const axeResults = []
+
+  // Loop through each page URL
+  for (let page of pages) {
+    const url = page.url
+
+    // Validate URL
+    assert(isValidURL(url), 'Invalid URL')
+
     try {
-      // Setup Puppeteer
-      browser = await puppeteer.launch()
-
       // Get new page
       const page = await browser.newPage()
       const response = await page.goto(url)
 
       if (response.status() !== 200) {
-        console.warn(
-          `Received status code ${response.status()} for ${url}.`
-        )
+        console.warn(`Received status code ${response.status()} for ${url}.`)
       }
 
       // Inject and run axe-core
@@ -73,41 +60,27 @@ module.exports = async function () {
     `)
 
       // Get the results from `axe.run()`.
-      results = await handle.jsonValue()
-      // Destroy the handle & return axe results.
+      const results = await handle.jsonValue()
+      // Destroy the handle
       await handle.dispose()
+
+      // Remove results.inapplicable and results.passes
+      delete results.inapplicable
+      delete results.passes
+
+      console.log("Saving results for " + url)
+
+      // Add results to axeResults array
+      axeResults.push({
+        url: url,
+        results: results,
+      })
     } catch (err) {
-      // Ensure we close the puppeteer connection when possible
-      if (browser) {
-        await browser.close()
-      }
-
-      // Re-throw
-      throw err
+      console.error(`Error running axe-core for ${url}:`, err.message)
     }
-
-    await browser.close()
-    return results
   }
 
-  let axeResults = await main(url)
-    .then((results) => {
-      // Return the results
-      return results
-    })
-    .catch((err) => {
-      console.error('Error running axe-core:', err.message)
-      process.exit(1)
-    })
+  await browser.close()
 
-  // Remove axeResults.inapplicable and axeResults.passes
-  delete axeResults.inapplicable
-  delete axeResults.passes
-
-  let something = 'Hey'
-
-  return {
-    something: something,
-    results: axeResults,
-  }
+  return axeResults
 }
