@@ -1,28 +1,22 @@
 const puppeteer = require('puppeteer')
 const axeCore = require('axe-core')
 const { parse: parseURL } = require('url')
-const assert = require('assert')
 
 const crawler = require('./crawler.js')
 
 async function crawlSite() {
-  try {
-    const results = await crawler.crawlSite()
-    return results
-
-  } catch (error) {
-    console.error(error)
-  }
+  const results = await crawler.crawlSite()
+  return results
 }
 
 module.exports = async function () {
   // Get list of urls using crawlSite()
-  let pages = await crawlSite()
-
-  // Cheap URL validation
-  const isValidURL = (input) => {
-    const u = parseURL(input)
-    return u.protocol && u.host
+  let pages
+  try {
+    pages = await crawlSite()
+  } catch (error) {
+    console.error(error)
+    return []
   }
 
   // Setup Puppeteer
@@ -32,16 +26,19 @@ module.exports = async function () {
   const axeResults = []
 
   // Loop through each page URL
-  for (let page of pages) {
+  for (const page of pages) {
     const url = page.url
 
     // Validate URL
-    assert(isValidURL(url), 'Invalid URL')
+    if (!parseURL(url).protocol || !parseURL(url).host) {
+      console.warn(`Invalid URL: ${url}`)
+      continue
+    }
 
     try {
       // Get new page
-      const page = await browser.newPage()
-      const response = await page.goto(url)
+      const pageInstance = await browser.newPage()
+      const response = await pageInstance.goto(url)
 
       if (response.status() !== 200) {
         console.warn(`Received status code ${response.status()} for ${url}.`)
@@ -49,7 +46,7 @@ module.exports = async function () {
 
       // Inject and run axe-core
       // Set options using https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter
-      const handle = await page.evaluateHandle(`
+      const handle = await pageInstance.evaluateHandle(`
         // Inject axe source code
         ${axeCore.source}
         // Run axe
@@ -57,7 +54,7 @@ module.exports = async function () {
             ancestry: true,
             reporter: 'v2',
         })
-    `)
+      `)
 
       // Get the results from `axe.run()`.
       const results = await handle.jsonValue()
@@ -68,12 +65,12 @@ module.exports = async function () {
       delete results.inapplicable
       delete results.passes
 
-      console.log("Saving results for " + url)
+      console.log(`Saving results for ${url}`)
 
       // Add results to axeResults array
       axeResults.push({
-        url: url,
-        results: results,
+        url,
+        results,
       })
     } catch (err) {
       console.error(`Error running axe-core for ${url}:`, err.message)
