@@ -8,18 +8,28 @@ const crawler = require('./crawler.js');
 async function crawlSite() {
   try {
     const results = await crawler.crawlSite();
-    console.log(results);
+    return results;
 
   } catch (error) {
     console.error(error);
   }
 }
 
-crawlSite();
+// crawlSite().then((results) => {
+//   console.log(results)
+// })
 
 
 module.exports = async function () {
   // Most of this code based on https://github.com/dequelabs/axe-core/tree/develop/doc/examples/puppeteer
+
+  // Get list of urls using crawlSite()
+  let pages = await crawlSite()
+
+  for (let page of pages) {
+    console.log(page.url)
+  }
+
 
   const myUrl = 'https://steedgood.com'
 
