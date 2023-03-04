@@ -5,15 +5,14 @@ dotenv.config()
 
 module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, max_pages_to_crawl) {
 
-  console.log(`${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`)
-
   // Cache the crawl results
-  let assetString = `${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`;
+  let assetString = `CRAWL ${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`;
   let asset = new AssetCache( assetString );
 
   // check if the cache is fresh within the last day
   if(asset.isCacheValid("1d")) {
     // return cached data.
+    console.log("Loading crawler data from cache...")
     return asset.getCachedValue(); // a promise
   }
 

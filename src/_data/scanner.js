@@ -1,8 +1,10 @@
 const puppeteer = require('puppeteer')
 const axeCore = require('axe-core')
 const { parse: parseURL } = require('url')
-const dotenv = require('dotenv')
 const crawler = require('./crawler.js')
+const {AssetCache} = require("@11ty/eleventy-fetch");
+const dotenv = require('dotenv')
+dotenv.config()
 
 
 module.exports = async function () {
@@ -28,7 +30,10 @@ module.exports = async function () {
   const browser = await puppeteer.launch()
 
   // Array to hold axe results for each URL
-  const axeResults = []
+  const axeResults = {
+    crawledPages: pages,
+    resultPages: [],
+  }
 
   // Loop through each page URL
   for (const page of pages) {
@@ -72,11 +77,13 @@ module.exports = async function () {
 
       console.log(`Saving results for ${url}`)
 
-      // Add results to axeResults array
-      axeResults.push({
+      // Add results to axeResults.resultPages array
+
+      axeResults.resultPages.push({
         url,
         results,
       })
+
     } catch (err) {
       console.error(`Error running axe-core for ${url}:`, err.message)
     }
