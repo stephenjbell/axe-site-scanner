@@ -75,7 +75,7 @@ module.exports = async function () {
       delete results.inapplicable
       delete results.passes
 
-      console.log(`Saving results for ${url}`)
+      console.log(`axe-core scanned ${url}`)
 
       // Add results to axeResults.resultPages array
 

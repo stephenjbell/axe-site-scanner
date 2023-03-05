@@ -1,31 +1,42 @@
+---
+title: Scanned Pages
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{site.name}}</title>
+    <title>{{title}} | {{site.name}}</title>
     <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
     <h1>{{site.name}}</h1>
-    <ul>
-        <li>
-            {{scanner.results.testEngine.name}} {{scanner.results.testEngine.version}}
-        </li>
-        <li>
-            {{scanner.results.url}}
-        </li>
-        <li>
-            {{scanner.results.timestamp}}
-        </li>
-    <ul>
+
+    <details>
+        <summary>Crawled pages</summary>
+        <ul>
+            {% for page in scanner.crawledPages %}
+            <li>
+                <a href="{{page.url}}">
+                    {{page.url}}
+                    {%- if page.innav -%}
+                        *
+                    {%- endif -%}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </details>
+    <p>
+        Scanned with {{scanner.resultPages[0].results.testEngine.name}} {{scanner.resultPages[0].results.testEngine.version}}
+        on {{ helpers.formatDate( scanner.resultPages[0].results.timestamp, "ff" ) }}
+    </p>
 
     <pre>
-    {{scanner|dump(4)}}
+    {{scanner.resultPages|dump(4)}}
     </pre>
-    {# <pre>
-    {{scanner.violations|dump(2)}}
-    </pre> #}
+
 </body>
 </html>

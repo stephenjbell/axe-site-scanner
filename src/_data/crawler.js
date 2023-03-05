@@ -33,7 +33,6 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
         // Check if the response is a valid HTML document
         if (/^text\/html/.test(res.headers['content-type'])) {
 
-          // TODO: This still isn't able to detect if the page redirects before it 200 OKs
           // Check if the URL has redirected or returned a 404 status
           if (res.statusCode === 200 && !res.request.uri.href.includes('/404')) {
 
