@@ -17,6 +17,17 @@ module.exports = async function () {
   const number_of_pages = process.env.NUMBER_OF_PAGES || 3
   const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 5
 
+  // Cache the crawl results
+  let assetString = `SCAN ${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`;
+  let asset = new AssetCache( assetString );
+
+  // check if the cache is fresh within the last day
+  if(asset.isCacheValid("1d")) {
+    // return cached data.
+    console.log("Loading scanner data from cache...")
+    return asset.getCachedValue(); // a promise
+  }
+
   // Get list of urls using crawlSite()
   let pages
   try {
@@ -90,6 +101,9 @@ module.exports = async function () {
   }
 
   await browser.close()
+
+  // Save the results to the cache
+  asset.save(axeResults, "json");
 
   return axeResults
 }
