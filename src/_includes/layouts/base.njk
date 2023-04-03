@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+	<link rel="icon" href="/img/favicon.png" sizes="any">
+
+	{% block title %}
+		<title>{{title}}</title>
+	{% endblock %}
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Suez+One&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/css/normalize.css">
+	<link rel="stylesheet" href="/css/a11ybench.css">
+
+	<!-- JS at page bottom -->
+	
+</head>
+<body class="{{bodyclass}}">
+	
+	<a class="skip-link" href="#main">Skip to content</a>
+
+	<header class="top">
+		<div class="logo">
+			{% if frontpage %}<h1>{% endif %}
+				<a href="https://a11ybench.com">A11yBench</a>
+			{% if frontpage %}</h1>{% endif %}
+		</div>
+		<nav class="menu">
+			<ul>
+				<li><a href="">About</a></li>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Blog</a></li>
+				<li>
+					<a href="" class="button">
+						Help Me!
+					</a>
+				</li>
+			</ul>
+		</nav>
+		<div class="steedlogo"><a href="https://steedgood.com" target="_blank">Steed</a></div>
+	</header>
+
+
+	<main id="main">
+
+        {% block content %}
+            {{ content | safe }}
+        {% endblock %}
+    </main>
+
+	<footer class="bottom">
+		<div class="logo">
+			<a href="https://a11ybench.com">A11yBench</a>
+			<p>
+				A11yBench is a free service of Steed Interactive. 
+			</p>
+		</div>
+		<div class="steedlogo"><a href="https://steedgood.com" target="_blank">Steed</a></div>
+		<div class="fineprint">
+			<a href="https://steedgood.com">&copy;2022 Steed Interactive</a>
+		</div>
+	</footer>
+
+
+    {% block scripts %}
+		<script src="/js/a11ybench.js"></script>
+    {% endblock %}
+</body>
+</html>

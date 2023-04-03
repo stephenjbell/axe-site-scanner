@@ -1,17 +1,8 @@
 ---
 title: Scanned Pages
+layout: 'layouts/base.njk'
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}} | {{site.name}}</title>
-    <link rel="stylesheet" href="/css/site.css">
-</head>
-<body>
     <h1>{{site.name}}</h1>
 
     <details>
@@ -32,7 +23,9 @@ title: Scanned Pages
 
     <ul>
         {% for page in scanner.resultPages %}
-            <li>{{page.results.url}}<br>
+            <li>
+                <a href="/page/{{page.slug}}">{{page.results.url}}</a>
+                <br>
 
                 {% set resultTypes = ["violations","incomplete"] %}
 
@@ -64,6 +57,3 @@ title: Scanned Pages
     <pre>
     {{scanner.resultPages|dump(4)}}
     </pre>
-
-</body>
-</html>

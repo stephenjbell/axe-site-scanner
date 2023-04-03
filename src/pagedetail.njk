@@ -4,5 +4,12 @@ pagination:
   data: scanner.resultPages
   size: 1
   alias: page
-permalink: false
+layout: 'layouts/base.njk'
+permalink: 'page/{{page.slug}}/index.html'
 ---
+
+{% for page in pagination.items %}
+    <pre>
+    {{page|dump(2)}}
+    </pre>
+{% endfor %}
