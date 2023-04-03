@@ -3,6 +3,7 @@ const axeCore = require('axe-core')
 const { parse: parseURL } = require('url')
 const crawler = require('./crawler.js')
 const {AssetCache} = require("@11ty/eleventy-fetch");
+const slugify = require('@sindresorhus/slugify')
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -22,7 +23,7 @@ module.exports = async function () {
   let asset = new AssetCache( assetString );
 
   // check if the cache is fresh within the last day
-  if(asset.isCacheValid("1d")) {
+  if(asset.isCacheValid("1s")) {
     // return cached data.
     console.log("Loading scanner data from cache...")
     return asset.getCachedValue(); // a promise
@@ -49,6 +50,11 @@ module.exports = async function () {
   // Loop through each page URL
   for (const page of pages) {
     const url = page.url
+
+    // Create a slug from the URL using the slugify filter. Leave off the protocol and trailing slash
+    let slug = url.replace(/^https?:\/\//, '').replace(/\/$/, '')
+    slug = slugify(slug)
+
 
     // Validate URL
     if (!parseURL(url).protocol || !parseURL(url).host) {
@@ -88,10 +94,21 @@ module.exports = async function () {
 
       console.log(`axe-core scanned ${url}`)
 
+      // Tally up the violations and incompletes for each page
+      results.violationCountOnPage = 0
+      results.incompleteCountOnPage = 0
+      for (const result of results.violations) {
+        results.violationCountOnPage += result.nodes.length
+      }
+      for (const result of results.incomplete) {
+        results.incompleteCountOnPage += result.nodes.length
+      }
+
+
       // Add results to axeResults.resultPages array
 
       axeResults.resultPages.push({
-        url,
+        slug,
         results,
       })
 

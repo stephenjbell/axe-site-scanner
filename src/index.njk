@@ -29,6 +29,33 @@ title: Scanned Pages
             {% endfor %}
         </ul>
     </details>
+
+    <ul>
+        {% for page in scanner.resultPages %}
+            <li>{{page.results.url}}<br>
+
+                {% set resultTypes = ["violations","incomplete"] %}
+
+                {% for resultType in resultTypes %}
+                    <p>
+                        {{resultType}}: {{page.results[resultType]|length}}
+                        <ul>
+                            {% for item in page.results[resultType] %}
+                                <li>{{item.id}} - {{item.nodes|length}}</li>
+
+                                {% for node in item.nodes %}
+                                    - {{ node.target[0] }} <br>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </p>
+                {% endfor %}
+
+                
+            </li>
+        {% endfor %}
+    </ul>
+
     <p>
         Scanned with {{scanner.resultPages[0].results.testEngine.name}} {{scanner.resultPages[0].results.testEngine.version}}
         on {{ helpers.formatDate( scanner.resultPages[0].results.timestamp, "ff" ) }}
