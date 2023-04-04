@@ -74,6 +74,54 @@ permalink: 'page/{{page.slug}}/index.html'
             {% endif %}
         </div>
     </section>
+
+    {% if violations.length %}
+        <section class="issuelist">
+            <div class="wrapper">
+                <h2>
+                    Violations on This Page
+                </h2>
+
+                {% for issue in violations %}
+                    <div class="issue" id="{{issue.id|slugify}}">
+                        
+                        <h3>
+                            {{issue.help}}
+                        </h3>
+                        <div class="tags">
+                            <div class="severity error">
+                                {{issue.impact}}
+                            </div>
+                        </div>
+
+                        <div class="textcol">
+                            <p>
+                                {{issue.description}}.
+                                <a href="{{issue.helpUrl}}" class="external" target="_blank">Axe Reference</a>
+                            </p>
+                            <ol class="occurrences">
+
+                                {% for node in issue.nodes %}
+                                  <li>
+                                      <code class="dark">
+                                          {{node.html}}
+                                      </code>
+                                      <div class="selector">
+                                          <div class="text">Element selector:</div>
+                                          <code class="light">{{node.target}}</code>
+                                      </div>
+                                  </li>
+                                  
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </section>
+    {% endif %}
   </div>
 
   <div id="incomplete-panel" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
