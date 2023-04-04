@@ -89,7 +89,7 @@ permalink: 'page/{{page.slug}}/index.html'
                             {{issue.help}}
                         </h3>
                         <div class="tags">
-                            <div class="severity error">
+                            <div class="severity violation {{issue.impact}}">
                                 {{issue.impact}}
                             </div>
                         </div>
@@ -152,6 +152,54 @@ permalink: 'page/{{page.slug}}/index.html'
             {% endif %}
         </div>
     </section>
+
+    {% if incomplete.length %}
+        <section class="issuelist">
+            <div class="wrapper">
+                <h2>
+                    Incomplete on This Page
+                </h2>
+
+                {% for issue in incomplete %}
+                    <div class="issue" id="{{issue.id|slugify}}">
+
+                        <h3>
+                            {{issue.help}}
+                        </h3>
+                        <div class="tags">
+                            <div class="severity incomplete {{issue.impact}}">
+                                {{issue.impact}}
+                            </div>
+                        </div>
+
+                        <div class="textcol">
+                            <p>
+                                {{issue.description}}.
+                                <a href="{{issue.helpUrl}}" class="external" target="_blank">Axe Reference</a>
+                            </p>
+                            <ol class="occurrences">
+
+                                {% for node in issue.nodes %}
+                                  <li>
+                                      <code class="dark">
+                                          {{node.html}}
+                                      </code>
+                                      <div class="selector">
+                                          <div class="text">Element selector:</div>
+                                          <code class="light">{{node.target}}</code>
+                                      </div>
+                                  </li>
+
+                                {% endfor %}
+                            </ol>
+                        </div>
+                    </div>
+                {% endfor %}
+
+
+            </div>
+        </section>
+    {% endif %}
   </div>
 
 
