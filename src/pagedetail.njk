@@ -1,5 +1,5 @@
 ---
-title: Pa11y Pages
+title: Scanned Page
 pagination:
   data: scanner.resultPages
   size: 1
@@ -30,8 +30,54 @@ permalink: 'page/{{page.slug}}/index.html'
       </div>
   </div>
 
+  {% set violations = pageresult.results.violations|sort(true, false, 'nodeCount') %}
+  {% set violationcount = pageresult.results.violationCountOnPage %}
+  {% set incomplete = pageresult.results.incomplete|sort(true, false, 'nodeCount') %}
+  {% set incompletecount = pageresult.results.incompleteCountOnPage %}
+
+  <div class="tabs">
+    <div class="tabs-issuetype" role="tablist" aria-label="Issues">
+        <button class="violations" role="tab" aria-selected="true" aria-controls="violations-panel" id="tab-1" tabindex="0">
+            {{violationcount}} Violations
+        </button>
+        <button class="incomplete" role="tab" aria-selected="false" aria-controls="incomplete-panel" id="tab-2" tabindex="-1">
+            {{incompletecount}} Incomplete
+        </button>
+    </div>
+  </div>
+
+  <div id="violations-panel" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
+
+    <section class="breakdown narrownumbers" style="--first-quantity:{{violations[0].nodeCount}};">
+
+        <div class="wrapper">
+            <h2>Violations Summary</h2>
+            {% if violations.length %}
+                <dl>
+                    {% for issue in violations %}
+                        <dt>
+                            <a href="#{{issue.id|slugify}}">
+                                {{issue.help}}
+                            </a>
+                        </dt>
+                        <dd style="--this-quantity:{{issue.nodeCount}};">
+                            <div class="quantity">{{issue.nodeCount}}</div>
+                            <div class="bar"></div>
+                        </dd>
+                    {% endfor %}
+
+                </dl>
+            {% else %}
+                <p>
+                    No violations found.
+                </p>
+            {% endif %}
+        </div>
+    </section>
+  </div>
+
 
   <pre>
-  {{pageresult.results.url|dump(2)}}
+  {{pageresult.results|dump(2)}}
   </pre>
 {% endfor %}

@@ -1021,7 +1021,7 @@ section.pagelist {
             border-bottom:none;
         }
 
-        &.errors {
+        &.violations {
             &:before {
                 content:'';
                 display:inline-block;
@@ -1036,7 +1036,7 @@ section.pagelist {
             }
         }
 
-        &.warnings {
+        &.incomplete {
             &:before {
                 content:'';
                 display:inline-block;
@@ -1044,21 +1044,6 @@ section.pagelist {
                 height:0.9em;
                 margin-right:0.3rem;
                 background-image:url(../img/icon-warning.svg);
-                background-size:contain;
-                background-repeat:no-repeat;
-                vertical-align:middle;
-                // transform:translateY(-5%);
-            }
-        }
-
-        &.notices {
-            &:before {
-                content:'';
-                display:inline-block;
-                width:0.9em;
-                height:0.9em;
-                margin-right:0.3rem;
-                background-image:url(../img/icon-notice.svg);
                 background-size:contain;
                 background-repeat:no-repeat;
                 vertical-align:middle;

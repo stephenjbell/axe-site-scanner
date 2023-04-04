@@ -84,7 +84,6 @@ module.exports = async function () {
         ${axeCore.source}
         // Run axe
         axe.run({
-            ancestry: true,
             reporter: 'v2',
         })
       `)
@@ -104,10 +103,29 @@ module.exports = async function () {
       results.violationCountOnPage = 0
       results.incompleteCountOnPage = 0
       for (const result of results.violations) {
-        results.violationCountOnPage += result.nodes.length
+
+        result.nodeCount = 0
+
+        for (const node of result.nodes) {
+          result.nodeCount += node.any.length
+          result.nodeCount += node.all.length
+          result.nodeCount += node.none.length
+        }
+
+        results.violationCountOnPage += result.nodeCount
       }
+
       for (const result of results.incomplete) {
-        results.incompleteCountOnPage += result.nodes.length
+
+        result.nodeCount = 0
+
+        for (const node of result.nodes) {
+          result.nodeCount += node.any.length
+          result.nodeCount += node.all.length
+          result.nodeCount += node.none.length
+        }
+
+        results.incompleteCountOnPage += result.nodeCount
       }
 
 
