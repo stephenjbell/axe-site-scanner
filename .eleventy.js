@@ -1,4 +1,5 @@
 const sass = require("sass");
+const dayjs = require('dayjs');
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.setServerOptions({
@@ -24,6 +25,14 @@ module.exports = function(eleventyConfig) {
   // Passthrough the img and js folders
   eleventyConfig.addPassthroughCopy("src/img");
   eleventyConfig.addPassthroughCopy("src/js");
+
+  // Multipurpose shortcode for retrieving CURRENT date
+  // If format string is left off, date will display in ISO8601
+  // https://day.js.org/docs/en/display/format
+  eleventyConfig.addShortcode('nowdate', function (formatString) {
+    var now = new Date()
+    return dayjs(now).format(formatString)
+  })
 
 
   // Set up SASS compilation

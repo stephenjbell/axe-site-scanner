@@ -71,6 +71,12 @@ module.exports = async function () {
         console.warn(`Received status code ${response.status()} for ${url}.`)
       }
 
+      // Get page title element 
+      const pageTitle = await pageInstance.title()
+
+      // Get title of the page from the H1 element
+      const pageH1 = await pageInstance.$eval('h1', el => el.innerText)
+
       // Inject and run axe-core
       // Set options using https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter
       const handle = await pageInstance.evaluateHandle(`
@@ -108,6 +114,8 @@ module.exports = async function () {
       // Add results to axeResults.resultPages array
 
       axeResults.resultPages.push({
+        pageH1,
+        pageTitle,
         slug,
         results,
       })

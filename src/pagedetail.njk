@@ -7,9 +7,31 @@ pagination:
 layout: 'layouts/base.njk'
 permalink: 'page/{{page.slug}}/index.html'
 ---
+{% for pageresult in pagination.items %}
+  <div class="section scanheading">
+      <div class="wrapper">
+          <nav class="breadcrumb" aria-label="breadcrumbs">
+              <ol>
+                  <li><a href="/">Home</a></li>
+              </ol>
+          </nav>
+          <h1>
+              <div class="large">
+                  Page Scan Results:
+              </div>
+              <div class="subtitle">
+                  {{ pageresult.pageH1 }}
+              </div>
+          </h1>
+          <a href="{{pageresult.results.url}}" class="sitelink" target="_blank">{{pageresult.results.url}}</a>
+          <time datetime="{% nowdate "YYYY-MM-DDTHH:mm:ssZ[Z]" %}">
+              Scanned {% nowdate "MMM. D, YYYY [at] h:mm A" %}
+          </time>
+      </div>
+  </div>
 
-{% for page in pagination.items %}
-    <pre>
-    {{page|dump(2)}}
-    </pre>
+
+  <pre>
+  {{pageresult.results.url|dump(2)}}
+  </pre>
 {% endfor %}

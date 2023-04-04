@@ -15,12 +15,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@11ty/eleventy": "^2.0.0",
-    "@11ty/eleventy-fetch": "^3.0.0",
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-fetch": "^4.0.0",
     "axe-core": "^4.6.3",
     "crawler": "^1.4.0",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
-    "puppeteer": "^19.7.1",
-    "sass": "^1.58.2"
+    "puppeteer": "^19.8.3",
+    "sass": "^1.60.0"
   }
 }
