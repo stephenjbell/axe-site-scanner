@@ -76,6 +76,36 @@ permalink: 'page/{{page.slug}}/index.html'
     </section>
   </div>
 
+  <div id="incomplete-panel" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
+
+    <section class="breakdown narrownumbers" style="--first-quantity:{{incomplete[0].nodeCount}};">
+
+        <div class="wrapper">
+            <h2>Incomplete Summary</h2>
+            {% if incomplete.length %}
+                <dl>
+                    {% for issue in incomplete %}
+                        <dt>
+                            <a href="#{{issue.id|slugify}}">
+                                {{issue.help}}
+                            </a>
+                        </dt>
+                        <dd style="--this-quantity:{{issue.nodeCount}};">
+                            <div class="quantity">{{issue.nodeCount}}</div>
+                            <div class="bar"></div>
+                        </dd>
+                    {% endfor %}
+
+                </dl>
+            {% else %}
+                <p>
+                    No incomplete found.
+                </p>
+            {% endif %}
+        </div>
+    </section>
+  </div>
+
 
   <pre>
   {{pageresult.results|dump(2)}}
