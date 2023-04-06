@@ -17,7 +17,6 @@ body {
     position:relative;
     font-family:'Source Sans Pro', sans-serif;
     padding:0;
-    font-size:calc(20/16) + rem;
     line-height:2rem;
     color: $purpledark;
 }
@@ -114,21 +113,30 @@ h5 { font-size:calc(24/16) + rem; }
 code {
     display:block;
     padding:1rem;
+    font-size:1rem !important;
     font-family:monospace;
     border-radius:0.5rem;
     width:100%;
     overflow-x:scroll;
+    max-height:200px;
+    background-color:#4a4a4a;
+    color:#fff;
+    // turn wordwrap on
+    white-space:wrap !important;
 
-    &.dark {
-        background-color:#4a4a4a;
-        color:#fff;
+    // Hide horizontal scrollbar
+    &::-webkit-scrollbar {
+        display:none;
     }
 
     &.light {
         background-color:#fff;
         color:$purpledark;
     }
-    
+}
+
+pre {
+    padding:0 !important;
 }
 
 header.top {
@@ -330,6 +338,9 @@ footer.bottom {
 }
 
 main {
+
+    font-size:calc(20/16) + rem;
+
     // Make sure element isn't behind header when navigated to
     // with anchor tag
     scroll-margin-top: 6rem;
@@ -1130,12 +1141,12 @@ section.issuelist {
                             padding-top:0.2rem;
                         }
 
-                        code {
-                            flex-grow:1;
-                            font-size:1rem;
-                            padding:0.5rem 1rem;
-                            line-height:1.5;
-                        }
+                        // code {
+                        //     flex-grow:1;
+                        //     font-size:1rem;
+                        //     padding:0.5rem 1rem;
+                        //     line-height:1.5;
+                        // }
                     }
 
                     &:not(:last-of-type) {

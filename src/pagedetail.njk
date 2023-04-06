@@ -103,12 +103,12 @@ permalink: 'page/{{page.slug}}/index.html'
 
                                 {% for node in issue.nodes %}
                                   <li>
-                                      <code class="dark">
-                                          {{node.html}}
-                                      </code>
+                                      {% highlight "html" %}
+                                          {{- node.html|safe -}}
+                                      {% endhighlight %}
                                       <div class="selector">
                                           <div class="text">Element selector:</div>
-                                          <code class="light">{{node.target}}</code>
+                                          <code class="light">{{ node.target|safe }}</code>
                                       </div>
                                   </li>
                                   
@@ -181,12 +181,12 @@ permalink: 'page/{{page.slug}}/index.html'
 
                                 {% for node in issue.nodes %}
                                   <li>
-                                      <code class="dark">
-                                          {{node.html}}
-                                      </code>
+                                    {% highlight "html" %}
+                                        {{- node.html|safe -}}
+                                    {% endhighlight %}
                                       <div class="selector">
                                           <div class="text">Element selector:</div>
-                                          <code class="light">{{node.target}}</code>
+                                          <code class="light">{{- node.target|safe -}}</code>
                                       </div>
                                   </li>
 

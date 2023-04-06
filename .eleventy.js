@@ -1,5 +1,6 @@
 const sass = require("sass");
 const dayjs = require('dayjs');
+const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.setServerOptions({
@@ -37,6 +38,10 @@ module.exports = function(eleventyConfig) {
 
   // Set up SASS compilation
   eleventyConfig.addTemplateFormats("scss");
+
+  // Set up syntax highlighting
+  console.log("HIGHLIGHT: ", syntaxHighlight)
+  eleventyConfig.addPlugin(syntaxHighlight);
 
   // Creates the extension for use
   eleventyConfig.addExtension("scss", {
