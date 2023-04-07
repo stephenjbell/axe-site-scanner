@@ -998,7 +998,7 @@ section.pagelist {
     margin:0 auto;
     padding:2rem 2rem 0 2rem;
     gap:4px;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr;
 
     // Line under tabs
     &:before {
@@ -1029,7 +1029,7 @@ section.pagelist {
         &[aria-selected="true"] {
             background-color:#fff;
             border:2px solid $purpledark;
-            border-bottom:none;
+            border-bottom:2px solid transparent;
         }
 
         &.violations {
@@ -1124,7 +1124,7 @@ section.issuelist {
             .occurrences {
                 padding-top:1rem;
                 
-                li {
+                & > li {
 
                     &::marker {
                         font-size:calc(40/16) + rem;
@@ -1151,6 +1151,14 @@ section.issuelist {
 
                     &:not(:last-of-type) {
                         margin-bottom:2rem;
+                    }
+
+                    details {
+                        padding-top:1rem;
+                        
+                        & summary {
+                            cursor:pointer;
+                        }
                     }
                 }
             }

@@ -109,6 +109,26 @@ permalink: 'page/{{page.slug}}/index.html'
                                             <div class="text">Element selector:</div>
                                             <code class="light">{{ node.target|safe }}</code>
                                         </div>
+
+                                        <details>
+                                            <summary>Detailed messages</summary>
+
+                                            {# Get more specific messages #}
+                                            {% set nodeitemtypes = ["any","all","none"] %}
+
+                                            {% for nodeitemtype in nodeitemtypes %}
+
+                                                {% if node[nodeitemtype]|length %}
+                                                    <ul>
+                                                        {% for nodeitem in node[nodeitemtype] %}
+                                                            <li>
+                                                                {{nodeitem.message}}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </details>
                                     </li>
 
                                   {% endfor %}
@@ -187,6 +207,26 @@ permalink: 'page/{{page.slug}}/index.html'
                                             <div class="text">Element selector:</div>
                                             <code class="light">{{- node.target|safe -}}</code>
                                         </div>
+
+                                        <details>
+                                            <summary>Detailed messages</summary>
+
+                                            {# Get more specific messages #}
+                                            {% set nodeitemtypes = ["any","all","none"] %}
+
+                                            {% for nodeitemtype in nodeitemtypes %}
+
+                                                {% if node[nodeitemtype]|length %}
+                                                    <ul>
+                                                        {% for nodeitem in node[nodeitemtype] %}
+                                                            <li>
+                                                                {{nodeitem.message}}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </details>
                                     </li>
 
                                   {% endfor %}
