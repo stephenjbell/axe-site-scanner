@@ -123,6 +123,12 @@ permalink: 'page/{{page.slug}}/index.html'
                                                         {% for nodeitem in node[nodeitemtype] %}
                                                             <li>
                                                                 {{nodeitem.message}}
+
+                                                                {% for related in nodeitem.relatedNodes %}
+                                                                    {% for target in related.target %}
+                                                                        <code class="light">{{target}}</code>
+                                                                    {% endfor %}
+                                                                {% endfor %}
                                                             </li>
                                                         {% endfor %}
                                                     </ul>
@@ -221,6 +227,12 @@ permalink: 'page/{{page.slug}}/index.html'
                                                         {% for nodeitem in node[nodeitemtype] %}
                                                             <li>
                                                                 {{nodeitem.message}}
+
+                                                                {% for related in nodeitem.relatedNodes %}
+                                                                    {% for target in related.target %}
+                                                                        <code class="light">{{target}}</code>
+                                                                    {% endfor %}
+                                                                {% endfor %}
                                                             </li>
                                                         {% endfor %}
                                                     </ul>
