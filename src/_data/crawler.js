@@ -38,6 +38,10 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
 
             console.log("  Queued: "+ c.queueSize +"  Visiting: " + res.request.uri.href)
 
+            if($('html').text().includes("Incapsula incident")) {
+              console.log("BLOCKED:",$('html').text())
+            }
+
             // Find all links on the page
             $('a').each(function () {
 
@@ -146,33 +150,36 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
   return new Promise(resolve => {
     c.on('drain', function () {
 
-      // Set the first page we scanned to be "in nav" (important)
-      pagesInfo[0].innav = true
+      if(pagesInfo.length > 0){
 
-      // Remove trailing slash from all urls
-      pagesInfo.forEach((page) => {
-        page.url = page.url.replace(/\/$/, '')
-      })
+        // Set the first page we scanned to be "in nav" (important)
+        pagesInfo[0].innav = true
 
-      // Remove pages with duplicate URLs
-      pagesInfo = pagesInfo.filter((page, index, self) =>
-        index === self.findIndex((t) => (
-          t.url === page.url
-        ))
-      )
+        // Remove trailing slash from all urls
+        pagesInfo.forEach((page) => {
+          page.url = page.url.replace(/\/$/, '')
+        })
 
-      // Sort pages info to put "innav" pages first, then sort by URL
-      pagesInfo.sort(function(a, b) {
-        if (a.innav === b.innav) {
-          return a.url.localeCompare(b.url);
-        }
-        else if (a.innav) {
-          return -1;
-        }
-        else {
-          return 1;
-        }
-      });
+        // Remove pages with duplicate URLs
+        pagesInfo = pagesInfo.filter((page, index, self) =>
+          index === self.findIndex((t) => (
+            t.url === page.url
+          ))
+        )
+
+        // Sort pages info to put "innav" pages first, then sort by URL
+        pagesInfo.sort(function(a, b) {
+          if (a.innav === b.innav) {
+            return a.url.localeCompare(b.url);
+          }
+          else if (a.innav) {
+            return -1;
+          }
+          else {
+            return 1;
+          }
+        });
+      }
 
       console.log("Pages crawled: " + pagesInfo.length)
 
