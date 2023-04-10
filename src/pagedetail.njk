@@ -114,7 +114,13 @@ permalink: 'page/{{page.slug}}/index.html'
                                   {% for node in issue.nodes %}
                                     <li>
                                         {% highlight "html" %}
-                                            {{- node.html|replace(r/[\t ]+/g ," ")|safe -}}
+                                            {# Replace whitespace w/ single space #}
+                                            {# Replace new line + whitespace w/ just new line #}
+                                            {{- node.html
+                                                |replace(r/[\t ]+/g ," ")
+                                                |replace(r/\n /g ,"\n")
+                                                |safe 
+                                            -}}
                                         {% endhighlight %}
                                         <div class="selector">
                                             <div class="text">Element selector:</div>
@@ -134,19 +140,21 @@ permalink: 'page/{{page.slug}}/index.html'
                                             {% if node[nodeitemtype]|length %}
                                                 <details>
                                                     <summary>{{description}}</summary>
-                                                    <ul>
-                                                        {% for nodeitem in node[nodeitemtype] %}
-                                                            <li>
-                                                                {{nodeitem.message}}
+                                                    <div class="checks">
+                                                        <ul>
+                                                            {% for nodeitem in node[nodeitemtype] %}
+                                                                <li>
+                                                                    {{nodeitem.message}}
 
-                                                                {% for related in nodeitem.relatedNodes %}
-                                                                    {% for target in related.target %}
-                                                                        <code class="light">{{target}}</code>
+                                                                    {% for related in nodeitem.relatedNodes %}
+                                                                        {% for target in related.target %}
+                                                                            <code class="light">{{target}}</code>
+                                                                        {% endfor %}
                                                                     {% endfor %}
-                                                                {% endfor %}
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
                                                 </details>
                                             {% endif %}
                                         {% endfor %}
@@ -234,7 +242,13 @@ permalink: 'page/{{page.slug}}/index.html'
                                   {% for node in issue.nodes %}
                                     <li>
                                         {% highlight "html" %}
-                                            {{- node.html|replace(r/[\t ]+/g ," ")|safe -}}
+                                            {# Replace whitespace w/ single space #}
+                                            {# Replace new line + whitespace w/ just new line #}
+                                            {{- node.html
+                                                |replace(r/[\t ]+/g ," ")
+                                                |replace(r/\n /g ,"\n")
+                                                |safe 
+                                            -}}
                                         {% endhighlight %}
                                         <div class="selector">
                                             <div class="text">Element selector:</div>
@@ -254,19 +268,21 @@ permalink: 'page/{{page.slug}}/index.html'
                                             {% if node[nodeitemtype]|length %}
                                                 <details>
                                                     <summary>{{description}}</summary>
-                                                    <ul>
-                                                        {% for nodeitem in node[nodeitemtype] %}
-                                                            <li>
-                                                                {{nodeitem.message}}
+                                                    <div class="checks">
+                                                        <ul>
+                                                            {% for nodeitem in node[nodeitemtype] %}
+                                                                <li>
+                                                                    {{nodeitem.message}}
 
-                                                                {% for related in nodeitem.relatedNodes %}
-                                                                    {% for target in related.target %}
-                                                                        <code class="light">{{target}}</code>
+                                                                    {% for related in nodeitem.relatedNodes %}
+                                                                        {% for target in related.target %}
+                                                                            <code class="light">{{target}}</code>
+                                                                        {% endfor %}
                                                                     {% endfor %}
-                                                                {% endfor %}
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
                                                 </details>
                                             {% endif %}
                                         {% endfor %}
