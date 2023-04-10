@@ -85,6 +85,7 @@ module.exports = async function () {
         // Run axe
         axe.run({
             reporter: 'v2',
+            resultTypes: ['violations','incomplete'],
         })
       `)
 
