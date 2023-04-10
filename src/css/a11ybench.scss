@@ -1087,7 +1087,7 @@ section.issuelist {
                 margin:0;
             }
 
-            .tags {
+            .severitytags {
                 order:-1;
 
                 .severity {
@@ -1118,6 +1118,19 @@ section.issuelist {
                         border:3px solid $bluenotice;
                         color:$bluenotice;
                     }
+                }
+            }
+
+            p:has(+ .tags){
+                margin-bottom:0;
+            }
+
+            .tags {
+                font-size:0.9rem;
+                opacity:0.8;
+
+                .tag {
+                    font-style:italic;
                 }
             }
 

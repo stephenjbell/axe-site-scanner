@@ -87,7 +87,7 @@ permalink: 'page/{{page.slug}}/index.html'
                           <h3>
                               {{issue.help}}
                           </h3>
-                          <div class="tags">
+                          <div class="severitytags">
                               <div class="severity violation {{issue.impact}}">
                                   {{issue.impact}}
                               </div>
@@ -98,6 +98,17 @@ permalink: 'page/{{page.slug}}/index.html'
                                   {{issue.description}}.
                                   <a href="{{issue.helpUrl}}" class="external" target="_blank">Axe Reference</a>
                               </p>
+
+                              {% if issue.tags|length %}
+                                <div class="tags">
+                                    Tags:
+                                    {% for tag in issue.tags %}
+                                        <span class="tag">{{tag}}</span>
+                                        {%- if loop.last != true%}, {% endif %}
+                                    {% endfor %}
+                                </div>
+                              {% endif %}
+
                               <ol class="occurrences">
 
                                   {% for node in issue.nodes %}
@@ -110,15 +121,19 @@ permalink: 'page/{{page.slug}}/index.html'
                                             <code class="light">{{ node.target|safe }}</code>
                                         </div>
 
-                                        <details>
-                                            <summary>Detailed messages</summary>
+                                        {# Get messages on specific checks #}
+                                        {# Any, all, none defined here under Parameters: https://www.deque.com/axe/core-documentation/api-documentation/#api-name-axeconfigure #}
+                                        {% set nodeitemtypes = {
+                                            "any":"Failing checks. At least one of these needs to pass. ",
+                                            "all": "Failing checks. All of these need to pass. ",
+                                            "none": "Failing checks. All of these need to pass. "
+                                            }
+                                        %}
 
-                                            {# Get more specific messages #}
-                                            {% set nodeitemtypes = ["any","all","none"] %}
-
-                                            {% for nodeitemtype in nodeitemtypes %}
-
-                                                {% if node[nodeitemtype]|length %}
+                                        {% for nodeitemtype, description in nodeitemtypes %}
+                                            {% if node[nodeitemtype]|length %}
+                                                <details>
+                                                    <summary>{{description}}</summary>
                                                     <ul>
                                                         {% for nodeitem in node[nodeitemtype] %}
                                                             <li>
@@ -132,9 +147,10 @@ permalink: 'page/{{page.slug}}/index.html'
                                                             </li>
                                                         {% endfor %}
                                                     </ul>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </details>
+                                                </details>
+                                            {% endif %}
+                                        {% endfor %}
+                                        
                                     </li>
 
                                   {% endfor %}
@@ -191,7 +207,7 @@ permalink: 'page/{{page.slug}}/index.html'
                           <h3>
                               {{issue.help}}
                           </h3>
-                          <div class="tags">
+                          <div class="severitytags">
                               <div class="severity incomplete {{issue.impact}}">
                                   {{issue.impact}}
                               </div>
@@ -202,27 +218,42 @@ permalink: 'page/{{page.slug}}/index.html'
                                   {{issue.description}}.
                                   <a href="{{issue.helpUrl}}" class="external" target="_blank">Axe Reference</a>
                               </p>
+
+                              {% if issue.tags|length %}
+                                <p class="tags">
+                                    Tags:
+                                    {% for tag in issue.tags %}
+                                        <span class="tag">{{tag}}</span>
+                                        {%- if loop.last != true%}, {% endif %}
+                                    {% endfor %}
+                                </p>
+                              {% endif %}
+
                               <ol class="occurrences">
 
                                   {% for node in issue.nodes %}
                                     <li>
-                                      {% highlight "html" %}
-                                          {{- node.html|replace(r/[\t ]+/g ," ")|safe -}}
-                                      {% endhighlight %}
+                                        {% highlight "html" %}
+                                            {{- node.html|replace(r/[\t ]+/g ," ")|safe -}}
+                                        {% endhighlight %}
                                         <div class="selector">
                                             <div class="text">Element selector:</div>
-                                            <code class="light">{{- node.target|safe -}}</code>
+                                            <code class="light">{{ node.target|safe }}</code>
                                         </div>
 
-                                        <details>
-                                            <summary>Detailed messages</summary>
+                                        {# Get messages on specific checks #}
+                                        {# Any, all, none defined here under Parameters: https://www.deque.com/axe/core-documentation/api-documentation/#api-name-axeconfigure #}
+                                        {% set nodeitemtypes = {
+                                            "any":"Failing checks. At least one of these needs to pass. ",
+                                            "all": "Failing checks. All of these need to pass. ",
+                                            "none": "Failing checks. All of these need to pass. "
+                                            }
+                                        %}
 
-                                            {# Get more specific messages #}
-                                            {% set nodeitemtypes = ["any","all","none"] %}
-
-                                            {% for nodeitemtype in nodeitemtypes %}
-
-                                                {% if node[nodeitemtype]|length %}
+                                        {% for nodeitemtype, description in nodeitemtypes %}
+                                            {% if node[nodeitemtype]|length %}
+                                                <details>
+                                                    <summary>{{description}}</summary>
                                                     <ul>
                                                         {% for nodeitem in node[nodeitemtype] %}
                                                             <li>
@@ -236,9 +267,10 @@ permalink: 'page/{{page.slug}}/index.html'
                                                             </li>
                                                         {% endfor %}
                                                     </ul>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </details>
+                                                </details>
+                                            {% endif %}
+                                        {% endfor %}
+
                                     </li>
 
                                   {% endfor %}
