@@ -4,13 +4,8 @@ $rederror: #D83D0D;
 $yellowwarning: #B26019;
 $bluenotice: #3D8DC7;
 
-// Box sizing - apparently this isn't part of normalize.css as I thought it was
-html {
+html, *, *:before, *:after {
     box-sizing: border-box;
-}
-
-*, *:before, *:after {
-    box-sizing: inherit;
 }
 
 body {
@@ -1127,7 +1122,7 @@ section.issuelist {
 
             .tags {
                 font-size:0.9rem;
-                opacity:0.8;
+                color:#6d6d6d;
 
                 .tag {
                     font-style:italic;
@@ -1167,11 +1162,37 @@ section.issuelist {
                     }
 
                     details {
-                        padding-top:1rem;
+                        padding-top:2rem;
+                        width:100%;
                         
                         & summary {
                             cursor:pointer;
                         }
+
+                        .checks {
+                            position:relative;
+                            width:100%;
+                        }
+
+                        ul {
+                            position:relative;
+                            width:100%;
+                            margin-top:0.5rem;
+                            list-style-type:disc;
+
+                            li {
+                                position:relative;
+                                width:100%;
+
+                                code {
+                                    display:block;
+                                    width:100%;
+                                    margin-top:0.5rem;
+                                }
+                            }
+                        }
+
+                        
                     }
                 }
             }
