@@ -40,7 +40,6 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addTemplateFormats("scss");
 
   // Set up syntax highlighting
-  console.log("HIGHLIGHT: ", syntaxHighlight)
   eleventyConfig.addPlugin(syntaxHighlight);
 
   // Creates the extension for use
