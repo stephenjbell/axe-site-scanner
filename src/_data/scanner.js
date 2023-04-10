@@ -66,6 +66,7 @@ module.exports = async function () {
 
     try {
       // Get new page
+      console.time(`Scanned ${url}`)
       const pageInstance = await browser.newPage()
       const response = await pageInstance.goto(url)
 
@@ -99,8 +100,6 @@ module.exports = async function () {
       // Remove results.inapplicable and results.passes
       delete results.inapplicable
       delete results.passes
-
-      console.log(`axe-core scanned ${url}`)
 
       // Tally up the violations and incompletes for each page
       results.violationCountOnPage = 0
@@ -143,6 +142,8 @@ module.exports = async function () {
         slug,
         results,
       })
+
+      console.timeLog(`Scanned ${url}`)
 
     } catch (err) {
       console.error(`Error running axe-core for ${url}:`, err.message)
