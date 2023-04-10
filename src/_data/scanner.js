@@ -45,6 +45,8 @@ module.exports = async function () {
   const axeResults = {
     crawledPages: pages,
     resultPages: [],
+    violationsTotal: 0,
+    incompleteTotal: 0,
   }
 
   // Loop through each page URL
@@ -129,6 +131,9 @@ module.exports = async function () {
         results.incompleteCountOnPage += result.nodeCount
       }
 
+      // Add to the total violations and incompletes
+      axeResults.violationsTotal += results.violationCountOnPage
+      axeResults.incompleteTotal += results.incompleteCountOnPage
 
       // Add results to axeResults.resultPages array
 
