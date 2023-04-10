@@ -40,17 +40,14 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
 
             // Find all links on the page
             $('a').each(function () {
-              
-              // Check if the link is in the top menu
-              let inNav = false
-
-              // If the link is "nav a" that isn't in <main>
-              if($(this).is("nav a") && !$(this).parents("main").length){
-                inNav = true
-              }
 
               // Get the link href
               let link_href = $(this).attr('href')
+
+              // If the link starts with #, exclude it
+              if (link_href && link_href.startsWith('#')) {
+                link_href=null
+              }
 
               // If the link starts with //, add "https:"
               if (link_href && link_href.startsWith('//')) {
@@ -96,7 +93,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 '.svg',
               ]
               if (link_href && excludeExtensions.some((ext) => link_href.endsWith(ext))) {
-                return false
+                link_href=null
               }
 
               // If a link starts with a string from our list, exclude it
@@ -110,7 +107,15 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 'webcal:',
               ]
               if (link_href && excludeProtocols.some((str) => link_href.startsWith(str))) {
-                return false
+                link_href=null
+              }
+
+              // Check if the link is in the top menu
+              let inNav = false
+
+              // If the link is "nav a" that isn't in <main>
+              if($(this).is("nav a") && !$(this).parents("main").length){
+                inNav = true
               }
 
               // Only follow links that start with urlMustContain, and that we haven't already visited
