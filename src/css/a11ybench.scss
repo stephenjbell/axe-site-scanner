@@ -719,7 +719,7 @@ section.breakdown {
     }
 
     &.narrownumbers .wrapper dl dd {
-        grid-template-columns:60px 1fr;
+        grid-template-columns:calc(var(--first-chars) + 0.5rem) 1fr;
     }
 }
 

@@ -46,10 +46,8 @@ permalink: 'page/{{page.slug}}/index.html'
     </div>
 
     <div id="violations-panel" role="tabpanel" tabindex="0" aria-labelledby="tab-1">
-    
-    
 
-      <section class="breakdown narrownumbers" style="--first-quantity:{{violations[0].nodeCount}};">
+      <section class="breakdown narrownumbers" style="--first-quantity:{{violations[0].nodeCount}};--first-chars:{{violations[0].nodeCount|string|length}}ch;">
 
           <div class="wrapper">
               <h2>Violations Summary</h2>
@@ -177,7 +175,7 @@ permalink: 'page/{{page.slug}}/index.html'
 
     <div id="incomplete-panel" role="tabpanel" tabindex="0" aria-labelledby="tab-2" hidden="hidden">
 
-      <section class="breakdown narrownumbers" style="--first-quantity:{{incomplete[0].nodeCount}};">
+      <section class="breakdown narrownumbers" style="--first-quantity:{{incomplete[0].nodeCount}};--first-chars:{{violations[0].nodeCount|string|length}}ch;">
 
           <div class="wrapper">
               <h2>Incomplete Summary</h2>
