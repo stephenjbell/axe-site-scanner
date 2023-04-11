@@ -15,8 +15,8 @@ module.exports = async function () {
   const crawlStartUrl = process.env.CRAWL_START_URL || 'https://steedgood.com/' // Where we begin crawling
   const urlsMustContain = process.env.URLS_MUST_CONTAIN || 'steedgood.com' // Only search links that contain this
   const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
-  const number_of_pages = process.env.NUMBER_OF_PAGES || 3
   const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 5
+  const max_pages_to_scan = process.env.MAX_PAGES_TO_SCAN || 3
 
   // Cache the crawl results
   let assetString = `SCAN ${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`;
