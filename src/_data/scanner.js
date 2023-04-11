@@ -23,7 +23,7 @@ module.exports = async function () {
   let asset = new AssetCache( assetString );
 
   // check if the cache is fresh within the last day
-  if(asset.isCacheValid("1d")) {
+  if(asset.isCacheValid("1s")) {
     // return cached data.
     console.log("Loading scanner data from cache...")
     return asset.getCachedValue(); // a promise
@@ -66,7 +66,7 @@ module.exports = async function () {
 
     try {
       // Get new page
-      console.time(`Scanned ${url}`)
+      console.time(`--Scanned ${url}`)
       const pageInstance = await browser.newPage()
       const response = await pageInstance.goto(url)
 
@@ -77,8 +77,17 @@ module.exports = async function () {
       // Get page title element 
       const pageTitle = await pageInstance.title()
 
-      // Get title of the page from the H1 element
-      const pageH1 = await pageInstance.$eval('h1', el => el.innerText)
+      // Try to get title of the page from the H1 element if it exists, otherwise fall back to "No H1"
+      const pageH1 = await pageInstance.evaluate(() => {
+        const h1 = document.querySelector('h1')
+        if (h1) {
+          return h1.innerText
+        } else {
+          return '(No H1 element on page)'
+        }
+      })
+
+      console.log(pageH1)
 
       // Inject and run axe-core
       // Set options using https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter
@@ -143,7 +152,7 @@ module.exports = async function () {
         results,
       })
 
-      console.timeLog(`Scanned ${url}`)
+      console.timeEnd(`--Scanned ${url}`)
 
     } catch (err) {
       console.error(`Error running axe-core for ${url}:`, err.message)
