@@ -1,59 +1,93 @@
 ---
-title: Scanned Pages
+title: Scanned pages
 layout: 'layouts/base.njk'
 ---
+<div class="section siteheading">
 
-    <h1>{{site.name}}</h1>
+    {% set homepage = scanner.resultPages[0].results.url %}
+    {% set homepage_domain = homepage|replace("https://", "")|replace("http://", "") %}
 
-    <details>
-        <summary>Crawled pages</summary>
-        <ul>
-            {% for page in scanner.crawledPages %}
-            <li>
-                <a href="{{page.url}}">
-                    {{page.url}}
-                    {%- if page.innav -%}
-                        *
-                    {%- endif -%}
-                </a>
-            </li>
+    <div class="wrapper">
+        <div class="imgcol">
+            <img src="https://s.a11ybench.com/{{homepage|urlencode}}/large/1:1/smaller/_wait:2/_{% nowdate "YYYYMM" %}" alt="{{env.SCANNED_SITE_TITLE}}" />
+        </div>
+        <div class="textcol">
+            <h1>
+                <div class="large">
+                    {{env.SCANNED_SITE_TITLE}}
+                </div>
+                <div class="subtitle">
+                    Accessibility Scan
+                </div>
+            </h1>
+            <a href="{{homepage}}" class="sitelink">{{homepage_domain}}</a>
+            <time datetime="{% nowdate "YYYY-MM-DDTHH:mm:ssZ[Z]" %}">
+                Scanned {{ scanner.resultPages|length }} pages on {% nowdate "MMM. D, YYYY" %}
+            </time>
+        </div>
+       
+    </div>
+</div>
+
+{# {% set errors = pa11ypages.issueTallyArrays.error|sort(true, false, "count") %}
+{% set mosterrors = errors[0].count / pa11ypages.pageCount %}
+
+<section class="breakdown" style="--first-quantity:{{mosterrors|round(2)}};">
+
+    <div class="wrapper">
+        <h2>Common Errors by Type</h2>
+        <dl>
+
+            {% for issue in errors %}
+
+                {% set countPerPage = issue.count / pa11ypages.pageCount %}
+                <dt>
+                    {{issue.name}}
+                </dt>
+                <dd style="--this-quantity:{{countPerPage|round(2)}};">
+                    <div class="quantity">{{countPerPage|round(2)}}/page</div>
+                    <div class="bar"></div>
+                </dd>
             {% endfor %}
-        </ul>
-    </details>
+        </dl>
+    </div>
+</section> #}
 
-    <ul>
-        {% for page in scanner.resultPages %}
-            <li>
-                <a href="/page/{{page.slug}}">{{page.results.url}}</a>
-                <br>
+<section class="pagelist">
+    <div class="wrapper">
+        <h2>List of Scanned Pages</h2>
+        <p>Pages with the most errors displayed first.</p>
 
-                {% set resultTypes = ["violations","incomplete"] %}
+        <ol class="pageol">
+            {% for page in scanner.resultPages|sort(true, false, 'results.violationCountOnPage') %}
+                <li>
+                    {# <pre>
+                    {{page|dump(2)}}
+                    </pre> #}
+                    <a href="page/{{page.slug}}/">
+                        <div class="textcol">
+                            <h3>{{ page.pageH1 }}</h3>
+                            <div class="url">
+                                {{page.results.url}}
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="errors">
+                            <div class="number">{{page.results.violationCountOnPage}}</div>
+                            <div class="text">Violations</div>
+                        </div>
 
-                {% for resultType in resultTypes %}
-                    <p>
-                        {{resultType}}: {{page.results[resultType]|length}}
-                        <ul>
-                            {% for item in page.results[resultType] %}
-                                <li>{{item.id}} - {{item.nodes|length}}</li>
+                        <div class="warningsnotices">
+                            {{page.results.violationCountOnPage}} Violations,
+                            {{page.results.incompleteCountOnPage}} Incomplete
+                        </div>
 
-                                {% for node in item.nodes %}
-                                    - {{ node.target[0] }} <br>
-                                {% endfor %}
-                            {% endfor %}
-                        </ul>
-                    </p>
-                {% endfor %}
+                    </a>
+                </li>
+            {% endfor %}
 
-                
-            </li>
-        {% endfor %}
-    </ul>
+        </ol>
 
-    <p>
-        Scanned with {{scanner.resultPages[0].results.testEngine.name}} {{scanner.resultPages[0].results.testEngine.version}}
-        on {{ helpers.formatDate( scanner.resultPages[0].results.timestamp, "ff" ) }}
-    </p>
-
-    <pre>
-    {{scanner.resultPages|dump(4)}}
-    </pre>
+    </div>
+</section>
