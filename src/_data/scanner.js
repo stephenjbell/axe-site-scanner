@@ -98,6 +98,10 @@ module.exports = async function () {
         axe.run({
             reporter: 'v2',
             resultTypes: ['violations','incomplete'],
+            runOnly: {
+              type: 'tag',
+              values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa','section508']
+            },
         })
       `)
 
