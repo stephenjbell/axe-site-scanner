@@ -29,8 +29,8 @@ layout: 'layouts/base.njk'
     </div>
 </div>
 
-{# {% set errors = pa11ypages.issueTallyArrays.error|sort(true, false, "count") %}
-{% set mosterrors = errors[0].count / pa11ypages.pageCount %}
+{% set pageCount = scanner.resultPages|length %}
+{# TODO: Figure out how to get the quantity of the first violation in violationsSummary #}
 
 <section class="breakdown" style="--first-quantity:{{mosterrors|round(2)}};">
 
@@ -38,20 +38,21 @@ layout: 'layouts/base.njk'
         <h2>Common Errors by Type</h2>
         <dl>
 
-            {% for issue in errors %}
+            {% for help, value in scanner.violationsSummary %}
 
-                {% set countPerPage = issue.count / pa11ypages.pageCount %}
+                {% set countPerPage = value / pageCount %}
                 <dt>
-                    {{issue.name}}
+                    {{help}}
                 </dt>
                 <dd style="--this-quantity:{{countPerPage|round(2)}};">
                     <div class="quantity">{{countPerPage|round(2)}}/page</div>
                     <div class="bar"></div>
                 </dd>
+
             {% endfor %}
         </dl>
     </div>
-</section> #}
+</section>
 
 <section class="pagelist">
     <div class="wrapper">
@@ -61,9 +62,6 @@ layout: 'layouts/base.njk'
         <ol class="pageol">
             {% for page in scanner.resultPages|sort(true, false, 'results.violationCountOnPage') %}
                 <li>
-                    {# <pre>
-                    {{page|dump(2)}}
-                    </pre> #}
                     <a href="page/{{page.slug}}/">
                         <div class="textcol">
                             <h3>{{ page.pageH1 }}</h3>

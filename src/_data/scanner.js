@@ -161,6 +161,25 @@ module.exports = async function () {
 
   await browser.close()
 
+  // Create a summary of the violations by type
+  axeResults.violationsSummary = {}
+
+  for(const page of axeResults.resultPages) {
+    
+    for(const violation of page.results.violations) {
+      if(axeResults.violationsSummary[violation.help] != undefined) {
+        axeResults.violationsSummary[violation.help] += violation.nodeCount
+      } else {
+        axeResults.violationsSummary[violation.help] = 1
+      }
+    }
+  }
+
+  // Sort the violationsSummary object by value
+  axeResults.violationsSummary = Object.fromEntries(
+    Object.entries(axeResults.violationsSummary).sort(([,a],[,b]) => b-a)
+  )
+
   // Save the results to the cache
   asset.save(axeResults, "json");
 
