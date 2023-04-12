@@ -285,6 +285,7 @@ footer.bottom {
     display:grid;
     width:100%;
     grid-template-columns:auto auto;
+    grid-template-areas:"logo steedlogo" "fineprint fineprint";
     gap:2rem;
     padding:2rem;
     margin-top:2rem;
