@@ -161,10 +161,25 @@ header.top {
             justify-self:end;
         }
     }
-    
-    // * {
-    //     outline:1px dashed;
-    // }
+
+    @media screen and (max-width:400px) {
+
+        grid-template-columns:4fr 3fr;
+
+        .logo a {
+            width:100% !important;
+        }
+        .steedlogo {
+            width:100% !important;
+        }
+
+        nav.menu {
+            ul {
+                gap:1rem !important;
+            }
+        }
+    }
+
 
     h1 {
         padding:0;
@@ -199,6 +214,7 @@ header.top {
             flex-direction:row;
             align-items:center;
             gap:2rem;
+            flex-wrap:wrap;
 
             li {
                 a {
@@ -275,11 +291,13 @@ footer.bottom {
 
     justify-content:space-between;
 
-    // * {
-    //     outline:1px dashed;
-    // }
+    @media screen and (max-width:600px) {
+        grid-template-columns:1fr;
+        grid-template-areas:"logo" "steedlogo" "fineprint";
+    }
 
     .logo {
+        grid-area:logo;
         width:300px;
         a {
             display:block;
@@ -293,15 +311,16 @@ footer.bottom {
         }
     }
 
-    nav.menu {
-        ul {
-            list-style-type:none;
-            padding:0;
-            margin:0;
-        }
-    }
+    // nav.menu {
+    //     ul {
+    //         list-style-type:none;
+    //         padding:0;
+    //         margin:0;
+    //     }
+    // }
 
     .steedlogo {
+        grid-area:steedlogo;
         width:144px;
 
         a {
@@ -326,6 +345,7 @@ footer.bottom {
     }
 
     .fineprint {
+        grid-area:fineprint;
         font-size:1rem;
         grid-column:span 2;
         text-align:center;
@@ -523,7 +543,7 @@ section.sitelinks {
     
     .wrapper {
         width:100%;
-        max-width:900px;
+        max-width:800px;
         margin:0 auto;
         padding:2rem;
         display:grid;
@@ -533,7 +553,22 @@ section.sitelinks {
 
         @media screen and (max-width:640px) {
             grid-template-columns:120px 1fr;
-            
+        }
+
+        @media screen and (max-width:400px) {
+            grid-template-columns:1fr;
+            grid-template-areas:"imgcol" "textcol";
+
+            .imgcol {
+                width:100%;
+                max-width:none !important;
+
+                img {
+                    width:100%;
+                    aspect-ratio: 1/0.6 !important;
+
+                }
+            }
         }
 
         .imgcol {
@@ -592,7 +627,7 @@ section.sitelinks {
 
     .wrapper {
         width:100%;
-        max-width:900px;
+        max-width:800px;
         margin:0 auto;
         padding:2rem;
 
@@ -753,7 +788,7 @@ section.pagelist {
                 a {
                     position:relative;
                     display:grid;
-                    grid-template-columns:5rem 1fr;
+                    grid-template-columns:5rem calc(100% - 5rem);
                     grid-template-areas:
                         "errors textcol"
                         "errors warningsnotices";
@@ -803,6 +838,7 @@ section.pagelist {
                     .textcol {
                         grid-area:textcol;
                         padding:2rem 2rem 0 2rem;
+                        width:100%;
 
                         h3 {
                             font-size:calc(32/16)+rem;
@@ -812,10 +848,12 @@ section.pagelist {
                             text-decoration-thickness:0.125em;
                             text-underline-offset:0.125em;
                             transition:all 0.2s ease-in-out;
+                            word-wrap:break-word;
                         }
 
                         .url {
                             font-size:calc(24/16)+rem;
+                            word-wrap:break-word;
                         }
                     }
 
@@ -989,9 +1027,9 @@ section.pagelist {
     display:grid;
     position:relative;
     width:100%;
-    max-width:900px;
+    max-width:800px;
     margin:0 auto;
-    padding:2rem 2rem 0 2rem;
+    padding:2rem 0 0 0;
     gap:4px;
     grid-template-columns:1fr 1fr;
 
