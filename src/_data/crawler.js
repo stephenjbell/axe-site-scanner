@@ -24,6 +24,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
     maxConnections: 10,
     retryTimeout: 3000, // Wait 3 seconds before retrying instead of 10
     retries: 1,
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 Edg/112.0.1722.39',
     callback: function (error, res, done) {
       if (error) {
         console.log(error)
@@ -32,6 +33,9 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
 
         // Check if the response is a valid HTML document
         if (/^text\/html/.test(res.headers['content-type'])) {
+          if(res.statusCode != 200){
+            console.log("ERROR: Status code",res.statusCode)
+          }
 
           // Check if the URL has redirected or returned a 404 status
           if (res.statusCode === 200 && !res.request.uri.href.includes('/404')) {
