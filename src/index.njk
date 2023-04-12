@@ -10,7 +10,7 @@ layout: 'layouts/base.njk'
 
     <div class="wrapper">
         <div class="imgcol">
-            <img src="https://s.a11ybench.com/{{homepage|urlencode}}/large/1:1/smaller/_wait:2/_{% nowdate "YYYYMM" %}" alt="{{env.SCANNED_SITE_TITLE}}" />
+            <img src="https://s.a11ybench.com/{{homepage|urlencode}}/large/1:1/smaller/_wait:2/_{% nowdate "YYYYMM" %}" alt="Screenshot of {{env.SCANNED_SITE_TITLE}}" />
         </div>
         <div class="textcol">
             <h1>
@@ -52,7 +52,8 @@ layout: 'layouts/base.njk'
                     <div class="quantity">{{countPerPage|round(1)}}/page</div>
                     <div class="bar"></div>
                 </dd>
-
+            {% else %}
+                <p>No violations found. Explore the pages below to check for "Incomplete" tests.</p>
             {% endfor %}
         </dl>
     </div>
