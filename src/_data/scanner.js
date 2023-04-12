@@ -100,7 +100,7 @@ module.exports = async function () {
             resultTypes: ['violations','incomplete'],
             runOnly: {
               type: 'tag',
-              values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa','section508']
+              values: ['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','section508','best-practice'] // best-practice
             },
         })
       `)
@@ -118,28 +118,12 @@ module.exports = async function () {
       results.violationCountOnPage = 0
       results.incompleteCountOnPage = 0
       for (const result of results.violations) {
-
-        result.nodeCount = 0
-
-        for (const node of result.nodes) {
-          result.nodeCount += node.any.length
-          result.nodeCount += node.all.length
-          result.nodeCount += node.none.length
-        }
-
+        result.nodeCount = result.nodes.length
         results.violationCountOnPage += result.nodeCount
       }
 
       for (const result of results.incomplete) {
-
-        result.nodeCount = 0
-
-        for (const node of result.nodes) {
-          result.nodeCount += node.any.length
-          result.nodeCount += node.all.length
-          result.nodeCount += node.none.length
-        }
-
+        result.nodeCount = result.nodes.length
         results.incompleteCountOnPage += result.nodeCount
       }
 
