@@ -11,5 +11,10 @@ permalink: 'summary.json'
   "violations_per_page": {{ violationsPerPage | round(5) }},
   "incomplete_per_page": {{ incompletePerPage | round(5) }},
   "pages_scanned": {{ pageCount }},
-  "first_page_scanned" : "{{scanner.resultPages[0].results.url}}" {# Probably the home page #}
+  "first_page_scanned" : "{{scanner.resultPages[0].results.url}}", {# Probably the home page #}
+  "violations_summary" : [
+    {% for violation in scanner.violationsSummary -%}
+      { "help":"{{violation.help}}","count":{{violation.count}} } {%- if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
 }

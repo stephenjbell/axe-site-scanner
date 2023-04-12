@@ -175,10 +175,15 @@ module.exports = async function () {
     }
   }
 
-  // Sort the violationsSummary object by value
-  axeResults.violationsSummary = Object.fromEntries(
-    Object.entries(axeResults.violationsSummary).sort(([,a],[,b]) => b-a)
-  )
+  // convert axeResults.violationsSummary to an array of objects like [{help: 'foo', count: 1}]
+  axeResults.violationsSummary = Object.keys(axeResults.violationsSummary).map(function(key) {
+    return {help: key, count: axeResults.violationsSummary[key]};
+  });
+
+  // Sort the violationsSummary array by count
+  axeResults.violationsSummary.sort(function(a, b) {
+    return b.count - a.count;
+  });
 
   // Save the results to the cache
   asset.save(axeResults, "json");

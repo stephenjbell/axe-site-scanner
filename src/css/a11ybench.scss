@@ -678,7 +678,7 @@ section.breakdown {
 
             dd {
                 display:grid;
-                grid-template-columns:110px 1fr;
+                grid-template-columns:calc(var(--first-chars) + 0.5rem) 1fr;
                 grid-template-areas:"quantity bar";
                 gap:1.5rem;
                 margin:0;

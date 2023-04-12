@@ -30,22 +30,25 @@ layout: 'layouts/base.njk'
 </div>
 
 {% set pageCount = scanner.resultPages|length %}
-{# TODO: Figure out how to get the quantity of the first violation in violationsSummary #}
+{% set countPerFirstPage = scanner.violationsSummary[0].count / pageCount %}
 
-<section class="breakdown" style="--first-quantity:{{mosterrors|round(2)}};">
+{# The number of characters in "_.00/page" for first item #}
+{% set charsForFirstPage = countPerFirstPage|round(0)|string|length + 7 %}
+
+<section class="breakdown" style="--first-quantity:{{countPerFirstPage|round(2)}};--first-chars:{{charsForFirstPage}}ch;">
 
     <div class="wrapper">
-        <h2>Common Errors by Type</h2>
+        <h2>Violation Summary by Type</h2>
         <dl>
 
-            {% for help, value in scanner.violationsSummary %}
+            {% for violation in scanner.violationsSummary %}
 
-                {% set countPerPage = value / pageCount %}
+                {% set countPerPage = violation.count / pageCount %}
                 <dt>
-                    {{help}}
+                    {{violation.help}}
                 </dt>
                 <dd style="--this-quantity:{{countPerPage|round(2)}};">
-                    <div class="quantity">{{countPerPage|round(2)}}/page</div>
+                    <div class="quantity">{{countPerPage|round(1)}}/page</div>
                     <div class="bar"></div>
                 </dd>
 
