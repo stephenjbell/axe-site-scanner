@@ -99,6 +99,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 '.png',
                 '.gif',
                 '.svg',
+                '.ics',
               ]
               if (link_href && excludeExtensions.some((ext) => link_href.endsWith(ext))) {
                 link_href=null
