@@ -101,7 +101,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 '.svg',
                 '.ics',
               ]
-              if (link_href && excludeExtensions.some((ext) => link_href.endsWith(ext))) {
+              if (link_href && excludeExtensions.some((ext) => link_href.toLowerCase().endsWith(ext))) {
                 link_href=null
               }
 
@@ -115,7 +115,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 'whatsapp:',
                 'webcal:',
               ]
-              if (link_href && excludeProtocols.some((str) => link_href.startsWith(str))) {
+              if (link_href && excludeProtocols.some((str) => link_href.toLowerCase().startsWith(str))) {
                 link_href=null
               }
 
