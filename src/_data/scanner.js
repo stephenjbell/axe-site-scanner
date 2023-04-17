@@ -17,6 +17,23 @@ module.exports = async function () {
   const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
   const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 5
   const max_pages_to_scan = process.env.MAX_PAGES_TO_SCAN || 3
+  const axe_scan_tags = process.env.AXE_SCAN_TAGS || "wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa,section508,best-practice"
+
+  // Get the axe tags for tests from the environment variable, and format it to feed to axe.run()
+  let run_only_scan_tags = ""
+  if(axe_scan_tags){
+    let scan_tags_array = axe_scan_tags.split(",")
+    let scan_tags_output = "['" + scan_tags_array.join("','") + "']"
+
+    run_only_scan_tags = `runOnly: {
+      type: 'tag',
+      values: ${scan_tags_output}
+    },`
+  }
+
+  console.log("TAGS:",run_only_scan_tags)
+  
+
 
   // Cache the crawl results
   let assetString = `SCAN ${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`;
@@ -105,10 +122,7 @@ module.exports = async function () {
         axe.run({
             reporter: 'v2',
             resultTypes: ['violations','incomplete'],
-            runOnly: {
-              type: 'tag',
-              values: ['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa','section508','best-practice'] // best-practice
-            },
+            ${run_only_scan_tags}
         })
       `)
 
