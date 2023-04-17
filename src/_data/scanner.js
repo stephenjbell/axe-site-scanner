@@ -81,7 +81,14 @@ module.exports = async function () {
       const pageH1 = await pageInstance.evaluate(() => {
         const h1 = document.querySelector('h1')
         if (h1) {
-          return h1.innerText
+          if (h1.innerText) {
+            return h1.innerText
+          } else {
+            const img = h1.querySelector('img')
+            if (img) {
+              return img.alt
+            }
+          }
         } else {
           return '(No H1 element on page)'
         }
