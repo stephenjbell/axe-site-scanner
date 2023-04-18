@@ -10,15 +10,20 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
   let asset = new AssetCache( assetString );
 
   // check if the cache is fresh within the last day
-  if(asset.isCacheValid("1d")) {
+  if(asset.isCacheValid("1s")) {
     // return cached data.
     console.log("Loading crawler data from cache...")
     return asset.getCachedValue(); // a promise
   }
 
 
-  let urlList = []
-  let pagesInfo = []
+  let urlList = [crawlStartUrl]
+  let pagesInfo = [
+    {
+      url: crawlStartUrl,
+      innav: true,
+    }
+  ]
 
   let c = new Crawler({
     maxConnections: 10,
@@ -156,9 +161,6 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
     c.on('drain', function () {
 
       if(pagesInfo.length > 0){
-
-        // Set the first page we scanned to be "in nav" (important)
-        pagesInfo[0].innav = true
 
         // Remove trailing slash from all urls
         pagesInfo.forEach((page) => {
