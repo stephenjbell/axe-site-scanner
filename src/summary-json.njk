@@ -7,6 +7,7 @@ permalink: 'summary.json'
 {%- set incompletePerPage = scanner.incompleteTotal / pageCount -%}
 {
   "site_title": "{{env.SCANNED_SITE_TITLE}}",
+  "display_url" "{{scanner.displayUrl}}",
   "generated": "{% nowdate %}",
   "violations_per_page": {{ violationsPerPage | round(5) }},
   "incomplete_per_page": {{ incompletePerPage | round(5) }},

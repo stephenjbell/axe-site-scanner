@@ -194,6 +194,9 @@ module.exports = async function () {
     return b.count - a.count;
   });
 
+  // Set axeResults.displayUrl by getting crawlStartUrl and removing the protocol and trailing slash
+  axeResults.displayUrl = crawlStartUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')
+
   // Save the results to the cache
   asset.save(axeResults, "json");
 
