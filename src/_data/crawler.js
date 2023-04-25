@@ -167,10 +167,10 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
           page.url = page.url.replace(/\/$/, '')
         })
 
-        // Remove pages with duplicate URLs
+        // Remove pages with duplicate URLs, including pages with different protocols (http/https)
         pagesInfo = pagesInfo.filter((page, index, self) =>
           index === self.findIndex((t) => (
-            t.url === page.url
+            t.url.replace(/https?:\/\//, '') === page.url.replace(/https?:\/\//, '')
           ))
         )
 
