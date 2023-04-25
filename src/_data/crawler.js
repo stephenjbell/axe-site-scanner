@@ -38,18 +38,28 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
 
         // Check if the response is a valid HTML document
         if (/^text\/html/.test(res.headers['content-type'])) {
+
+          let blocked = false;
           if(res.statusCode != 200){
             console.log("ERROR: Status code",res.statusCode)
           }
 
+          if($('html').text().includes("Incapsula incident")) {
+            blocked = true;
+            console.log("BLOCKED:",$('html').text())
+          }
+
+          if($('html').text().includes("Cloudflare")) {
+            blocked = true;
+            console.log("BLOCKED:",$('html').text())
+          }
+
           // Check if the URL has redirected or returned a 404 status
-          if (res.statusCode === 200 && !res.request.uri.href.includes('/404')) {
+          if (res.statusCode === 200 && !res.request.uri.href.includes('/404') && !blocked) {
 
             console.log("  Queued: "+ c.queueSize +"  Visiting: " + res.request.uri.href)
 
-            if($('html').text().includes("Incapsula incident")) {
-              console.log("BLOCKED:",$('html').text())
-            }
+            
 
             // Find all links on the page
             $('a').each(function () {
