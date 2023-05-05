@@ -147,7 +147,7 @@ header.top {
     align-items:center;
     column-gap:3rem;
     row-gap:1rem;
-    padding:1.5rem;
+    padding:1rem 1.5rem;
     background-color:#fff;
     z-index:100;
 
@@ -195,11 +195,11 @@ header.top {
         grid-area:logo;
         a {
             display:block;
-            width:200px;
+            width:155px;
             max-width:100%;
-            aspect-ratio:100/22;
+            aspect-ratio:2.2;
             text-indent:-9999px;
-            background-image:url(/img/a11ybench-logo.svg);
+            background-image:url(/img/clearcut-logo.svg);
             background-size:contain;
             background-repeat:no-repeat;
         }
@@ -306,11 +306,11 @@ footer.bottom {
         width:300px;
         a {
             display:block;
-            width:200px;
+            width:155px;
             max-width:100%;
-            aspect-ratio:100/22;
+            aspect-ratio:2.2;
             text-indent:-9999px;
-            background-image:url(/img/a11ybench-logo.svg);
+            background-image:url(/img/clearcut-logo.svg);
             background-size:contain;
             background-repeat:no-repeat;
         }
@@ -896,6 +896,16 @@ section.pagelist {
             margin-bottom:2rem;
             counter-increment:sitelist;
 
+            @media screen and (max-width:600px) {
+                grid-template-columns:3rem 1fr;
+
+                .olnumber {
+                    .digit {
+                        font-size:calc(48/16) + rem !important;
+                    }
+                }
+            }
+
             .olnumber {
                 text-align:right;
                 font-weight:bold;
@@ -924,22 +934,45 @@ section.pagelist {
                 display:grid;
                 position:relative;
                 text-decoration:none;
-                grid-template-columns:180px 1fr;
+                grid-template-columns:90px 90px 1fr;
                 grid-template-areas:
-                    "imgcol textcol"
-                    "info info";
+                    "imgcol imgcol textcol"
+                    "info info info";
+
+                @media screen and (max-width:600px) {
+                    grid-template-columns:1fr;
+                    grid-template-areas:
+                        "imgcol"
+                        "textcol"
+                        "info";
+
+                    &:before {
+                        display:none !important;
+                    }
+
+                    .imgcol {
+                        padding:0 0 1rem 0 !important;
+
+                        img {
+                            border-radius:0.5rem !important;
+                            aspect-ratio:1.5 !important;
+                            filter: none !important;
+                        }
+                    }
+
+                    .textcol {
+                        border-radius:0.5rem !important;
+                    }
+                }
 
                 // Background color
                 &:before {
                     content:'';
                     display:block;
-                    position:absolute;
-                    top:0;
-                    right:0;
-                    width:calc(100% - 90px);
-                    height:100%;
+                    grid-column:2/3;
+                    grid-row:1/2;
                     background-color:$yellowgray;
-                    border-radius:0.5rem;
+                    border-radius:0.5rem 0 0 0.5rem;
                     z-index:-1;
                 }
 
@@ -963,6 +996,8 @@ section.pagelist {
                 .textcol {
                     grid-area:textcol;
                     padding:2rem;
+                    background-color:$yellowgray;
+                    border-radius:0 0.5rem 0.5rem 0;
 
                     h2 {
                         font-size:calc(40/16) + rem;
