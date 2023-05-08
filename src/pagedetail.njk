@@ -118,15 +118,14 @@ permalink: 'page/{{page.slug}}/index.html'
 
                                   {% for node in issue.nodes %}
                                     <li>
-                                        {% highlight "html" %}
-                                            {# Replace whitespace w/ single space #}
-                                            {# Replace new line + whitespace w/ just new line #}
+                                        <pre><code class="language-html">
+                                            {#- Replace whitespace w/ single space -#}
+                                            {#- Replace new line + whitespace w/ just new line -#}
                                             {{- node.html
                                                 |replace(r/[\t ]+/g ," ")
                                                 |replace(r/\n /g ,"\n")
-                                                |safe 
                                             -}}
-                                        {% endhighlight %}
+                                        </code></pre>
                                         <div class="selector">
                                             <div class="text">Element selector:</div>
                                             <code class="light">{{ node.target|safe }}</code>
@@ -250,15 +249,14 @@ permalink: 'page/{{page.slug}}/index.html'
 
                                   {% for node in issue.nodes %}
                                     <li>
-                                        {% highlight "html" %}
-                                            {# Replace whitespace w/ single space #}
-                                            {# Replace new line + whitespace w/ just new line #}
+                                        <pre><code class="language-html">
+                                            {#- Replace whitespace w/ single space -#}
+                                            {#- Replace new line + whitespace w/ just new line -#}
                                             {{- node.html
                                                 |replace(r/[\t ]+/g ," ")
                                                 |replace(r/\n /g ,"\n")
-                                                |safe 
                                             -}}
-                                        {% endhighlight %}
+                                        </code></pre>
                                         <div class="selector">
                                             <div class="text">Element selector:</div>
                                             <code class="light">{{ node.target|safe }}</code>

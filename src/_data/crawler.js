@@ -10,7 +10,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
   let asset = new AssetCache( assetString );
 
   // check if the cache is fresh within the last day
-  if(asset.isCacheValid("1s")) {
+  if(asset.isCacheValid("1d")) {
     // return cached data.
     console.log("Loading crawler data from cache...")
     return asset.getCachedValue(); // a promise

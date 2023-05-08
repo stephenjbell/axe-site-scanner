@@ -40,7 +40,7 @@ module.exports = async function () {
   let asset = new AssetCache( assetString );
 
   // check if the cache is fresh within the last day
-  if(asset.isCacheValid("1s")) {
+  if(asset.isCacheValid("1d")) {
     // return cached data.
     console.log("Loading scanner data from cache...")
     return asset.getCachedValue(); // a promise
