@@ -3,8 +3,19 @@ permalink: 'summary.json'
 ---
 
 {%- set pageCount = scanner.resultPages|length -%}
-{%- set violationsPerPage = scanner.violationsTotal / pageCount -%}
-{%- set incompletePerPage = scanner.incompleteTotal / pageCount -%}
+
+{%- if scanner.violationsTotal > 0 -%}
+  {%- set violationsPerPage = scanner.violationsTotal / pageCount -%}
+{%- else -%}
+  {%- set violationsPerPage = 0 -%}
+{%- endif -%}
+
+{%- if scanner.incompleteTotal > 0 -%}
+  {%- set incompletePerPage = scanner.incompleteTotal / pageCount -%}
+{%- else -%}
+  {%- set incompletePerPage = 0 -%}
+{%- endif -%}
+
 {
   "site_title": "{{env.SCANNED_SITE_TITLE}}",
   "display_url": "{{scanner.displayUrl}}",
