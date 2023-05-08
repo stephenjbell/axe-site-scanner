@@ -82,6 +82,12 @@ module.exports = async function () {
     }
 
     try {
+
+      // Stop scanning if we've successfully scanned the max number of pages to scan
+      if (axeResults.resultPages.length >= max_pages_to_scan) {
+        break
+      }
+
       // Get new page
       console.time(`--Scanned ${url}`)
       const pageInstance = await browser.newPage()
