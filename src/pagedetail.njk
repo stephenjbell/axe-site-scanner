@@ -54,6 +54,10 @@ permalink: 'page/{{page.slug}}/index.html'
         {% endif %}
       >
 
+        <div class="intro">
+            <p><strong>Violations</strong> - These issues have been flagged as problematic by our Axe, our accessibility scanner. Axe’s "no false positives" philosophy means that if it's shown here, it's likely a problem to someone.</p>
+        </div>
+
           <div class="wrapper">
               <h2>Violations Summary</h2>
               {% if violations.length %}
@@ -106,9 +110,9 @@ permalink: 'page/{{page.slug}}/index.html'
 
                               {% if issue.tags|length %}
                                 <div class="tags">
-                                    Tags:
-                                    {% for tag in issue.tags %}
-                                        <span class="tag">{{tag}}</span>
+                                    Rule type:
+                                    {% for tag in helpers.adjustTags(issue.tags) %}
+                                        <span class="tag" data-axetag="{{tag[0]}}">{{tag[1]}}</span>
                                         {%- if loop.last != true%}, {% endif %}
                                     {% endfor %}
                                 </div>
@@ -184,8 +188,12 @@ permalink: 'page/{{page.slug}}/index.html'
             style="--first-quantity:{{incomplete[0].nodeCount}};--first-chars:{{incomplete[0].nodeCount|string|length}}ch;"
         {% endif %}
     >
+        <div class="intro">
+            <p><strong>Incomplete</strong> - These issues may be problematic, but couldn’t be completely tested automatically. They should be reviewed by a real person.</p>
+        </div>
 
           <div class="wrapper">
+
               <h2>Incomplete Summary</h2>
               {% if incomplete.length %}
                   <dl>
@@ -236,13 +244,13 @@ permalink: 'page/{{page.slug}}/index.html'
                               </p>
 
                               {% if issue.tags|length %}
-                                <p class="tags">
-                                    Tags:
-                                    {% for tag in issue.tags %}
-                                        <span class="tag">{{tag}}</span>
+                                <div class="tags">
+                                    Rule type:
+                                    {% for tag in helpers.adjustTags(issue.tags) %}
+                                        <span class="tag" data-axetag="{{tag[0]}}">{{tag[1]}}</span>
                                         {%- if loop.last != true%}, {% endif %}
                                     {% endfor %}
-                                </p>
+                                </div>
                               {% endif %}
 
                               <ol class="occurrences">
