@@ -25,6 +25,29 @@ layout: 'layouts/base.njk'
             <time datetime="{% nowdate "YYYY-MM-DDTHH:mm:ssZ[Z]" %}">
                 Scanned {{ scanner.resultPages|length }} pages on {% nowdate "MMM. D, YYYY" %}
             </time>
+
+            {%- set pageCount = scanner.resultPages|length -%}
+
+            {%- if scanner.violationsTotal > 0 -%}
+              {%- set violationsPerPage = scanner.violationsTotal / pageCount -%}
+            {%- else -%}
+              {%- set violationsPerPage = 0 -%}
+            {%- endif -%}
+
+            {%- if scanner.incompleteTotal > 0 -%}
+              {%- set incompletePerPage = scanner.incompleteTotal / pageCount -%}
+            {%- else -%}
+              {%- set incompletePerPage = 0 -%}
+            {%- endif -%}
+
+            <div class="summary">
+                <div class="item violations text">
+                    <span class="number">{{violationsPerPage|round(1)}}</span> <span class="label">Violations/Page</span>
+                </div>
+                <div class="item incomplete text">
+                    <span class="number">{{incompletePerPage|round(1)}}</span> <span class="label">Incomplete/Page</span>
+                </div>
+            </div>
         </div>
        
     </div>
