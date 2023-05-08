@@ -89,6 +89,9 @@ module.exports = async function () {
 
       if (response.status() !== 200) {
         console.warn(`Received status code ${response.status()} for ${url}.`)
+
+        // Fail - Don't scan the page if we don't get a 200 response
+        continue
       }
 
       // Get page title element 
