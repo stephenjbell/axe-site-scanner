@@ -45,7 +45,7 @@ layout: 'layouts/base.njk'
                     <span class="number">{{violationsPerPage|round(1)}}</span> <span class="label">Violations/Page</span>
                 </div>
                 <div class="item incomplete text">
-                    <span class="number">{{incompletePerPage|round(1)}}</span> <span class="label">Incomplete/Page</span>
+                    <span class="number">{{incompletePerPage|round(1)}}</span> <span class="label">Needs Review/Page</span>
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@ layout: 'layouts/base.njk'
                     <div class="bar"></div>
                 </dd>
             {% else %}
-                <p>No violations found. Explore the pages below to check for "Incomplete" tests.</p>
+                <p>No violations found. Explore the pages below to check for tests that need manual review.</p>
             {% endfor %}
         </dl>
     </div>
@@ -106,7 +106,7 @@ layout: 'layouts/base.njk'
 
                         <div class="warningsnotices">
                             {{page.results.violationCountOnPage}}&nbsp;Violations,
-                            {{page.results.incompleteCountOnPage}}&nbsp;Incomplete
+                            {{page.results.incompleteCountOnPage}}&nbsp;Needs Review
                         </div>
 
                     </a>

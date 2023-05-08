@@ -42,7 +42,7 @@ permalink: 'page/{{page.slug}}/index.html'
             {{violationcount}} Violations
         </button>
         <button class="incomplete" role="tab" aria-selected="false" aria-controls="incomplete-panel" id="tab-2" tabindex="-1">
-            {{incompletecount}} Incomplete
+            {{incompletecount}} Needs Review
         </button>
     </div>
 
@@ -55,7 +55,7 @@ permalink: 'page/{{page.slug}}/index.html'
       >
 
         <div class="intro">
-            <p><strong>Violations</strong> - These issues have been flagged as problematic by our Axe, our accessibility scanner. Axe's "no false positives" philosophy means that if it's shown here, it's likely a problem to someone.</p>
+            <p><strong>Violations</strong> - These issues have been flagged as problematic by Axe, our accessibility scanner. Axe's "no false positives" philosophy means that if it's shown here, it's likely a problem to someone.</p>
         </div>
 
           <div class="wrapper">
@@ -189,12 +189,12 @@ permalink: 'page/{{page.slug}}/index.html'
         {% endif %}
     >
         <div class="intro">
-            <p><strong>Incomplete</strong> - These issues may be problematic, but couldn’t be completely tested automatically. They should be reviewed by a real person.</p>
+            <p><strong>Needs Review</strong> - These "incomplete" issues may be problematic, but couldn't be completely tested automatically. They should be reviewed by a real person.</p>
         </div>
 
           <div class="wrapper">
 
-              <h2>Incomplete Summary</h2>
+              <h2>Needs Review Summary</h2>
               {% if incomplete.length %}
                   <dl>
                       {% for issue in incomplete %}
@@ -222,7 +222,7 @@ permalink: 'page/{{page.slug}}/index.html'
           <section class="issuelist">
               <div class="wrapper">
                   <h2>
-                      Incomplete on This Page
+                      Needs Review on This Page
                   </h2>
 
                   {% for issue in incomplete %}
