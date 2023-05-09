@@ -56,7 +56,9 @@ module.exports = async function () {
   }
 
   // Setup Puppeteer
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch({
+    defaultArgs: ['--no-sandbox', '--disable-setuid-sandbox', '--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36']
+  })
 
   // Array to hold axe results for each URL
   const axeResults = {
