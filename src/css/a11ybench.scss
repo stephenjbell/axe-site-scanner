@@ -937,6 +937,16 @@ section.pagelist {
     padding:0 2rem;
 }
 
+.section.intro {
+    max-width:600px;
+    margin:0 auto;
+    padding:0 2rem;
+
+    .wrapper {
+        padding:0;
+    }
+}
+
 .sitelist {
     .wrapper {
         width:100%;
