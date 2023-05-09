@@ -12,6 +12,10 @@ html, *, *:before, *:after {
 // https://datacadamia.com/web/css/grid/overflow#solution_set_an_explicit_minimum_not_to_auto
 * { min-width:0; }
 
+// * {
+//     outline:1px dashed;
+// }
+
 html {
     scroll-behavior:smooth;
 }
@@ -47,17 +51,12 @@ body {
     background-color:$yellowgray;
 }
 
-
-
-a {
-    transition:0.2s all ease-in-out;
-}
-
 a {
     color:$purpledark;
     text-decoration-color: transparentize($purpledark, 0.7);
     text-decoration-thickness:0.125em;
     text-underline-offset:0.125em;
+    transition:0.2s all ease-in-out;
 
     &:hover {
         text-decoration-color:transparentize($purpledark, 0.3);
@@ -172,7 +171,8 @@ header.top {
 
     @media screen and (max-width:400px) {
 
-        grid-template-columns:4fr 3fr;
+        grid-template-columns:1fr 1fr;
+        column-gap:3rem;
 
         .logo a {
             width:100% !important;
@@ -212,6 +212,7 @@ header.top {
     nav.menu {
         grid-area:nav;
         justify-self:end;
+        position:relative;
 
         ul {
             display:inline-block;
@@ -223,6 +224,16 @@ header.top {
             align-items:center;
             gap:2rem;
             flex-wrap:wrap;
+
+            @media screen and (max-width:400px) {
+                position:relative;
+                background-color:$yellowgray;
+                width:100vw;
+                left:50%;
+                transform:translateX(-50%);
+                padding:0.3rem 0;
+                justify-content: center;
+            }
 
             li {
                 a {
@@ -256,6 +267,10 @@ header.top {
                             background-color:lighten($purpledark, 10%);
                             transform:scale(1.05) rotate(2deg);
                         }
+
+                        @media screen and (max-width:400px) {
+                            padding:0 0.7rem;
+                        }
                     }
                 }
             }
@@ -274,6 +289,7 @@ header.top {
             background-image:url(/img/steed-logo.svg);
             background-size:contain;
             background-repeat:no-repeat;
+            background-position:center;
         }
     }
 
