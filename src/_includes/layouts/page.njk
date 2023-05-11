@@ -1,0 +1,22 @@
+{% extends 'layouts/base.njk' %}
+
+{% block content %}
+
+    <div class="section scanheading">
+        <div class="wrapper">
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <ol>
+                    <li><a href="/">Home</a></li>
+                </ol>
+            </nav>
+            <h1>
+                <div class="large">
+                    {{title}}
+                </div>
+            </h1>
+        </div>
+    </div>
+    <div class="section narrow">
+        {{ content | safe }}
+    </section>
+{% endblock %}

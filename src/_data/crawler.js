@@ -55,17 +55,20 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
           }
 
           // Check if the URL has redirected or returned a 404 status
-          if (res.statusCode === 200 && !res.request.uri.href.includes('/404') && !blocked) {
+          if (res.statusCode === 200 && res.request.uri.href.includes(urlsMustContain) && !res.request.uri.href.includes('/404') && !blocked) {
 
             console.log("  Queued: "+ c.queueSize +"  Visiting: " + res.request.uri.href)
-
-            
 
             // Find all links on the page
             $('a').each(function () {
 
               // Get the link href
               let link_href = $(this).attr('href')
+
+              // If the link doesn't include urlsMustContain, exclude it
+              if (link_href && !link_href.includes(urlsMustContain)) {
+                link_href=null
+              }
 
               // If the link starts with #, exclude it
               if (link_href && link_href.startsWith('#')) {
@@ -144,7 +147,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
 
               // Only follow links that start with urlMustContain, and that we haven't already visited
               // and if we haven't passed the max number of pages to crawl
-              if (link_href && link_href.includes(urlsMustContain) && !urlList.includes(link_href) && urlList.length < max_pages_to_crawl) {
+              if (link_href && !urlList.includes(link_href) && urlList.length < max_pages_to_crawl) {
 
                 urlList.push(link_href)
                 pagesInfo.push({ 
