@@ -5,7 +5,7 @@ layout: 'layouts/base.njk'
 ---
 <div class="section siteheading">
 
-    {% set homepage = scanner.resultPages[0].results.url %}
+    {% set homepage = env.CRAWL_START_URL %}
     {% set homepage_domain = homepage|replace("https://", "")|replace("http://", "") %}
 
     <div class="wrapper">
