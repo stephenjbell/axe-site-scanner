@@ -91,9 +91,9 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
               }
 
               // Strip off anything after a question mark
-              if (link_href && link_href.indexOf('?') > -1) {
-                link_href = link_href.substring(0, link_href.indexOf('?'))
-              }
+              // if (link_href && link_href.indexOf('?') > -1) {
+              //   link_href = link_href.substring(0, link_href.indexOf('?'))
+              // }
 
               // Exclude links that are non-document files
               let excludeExtensions = [
