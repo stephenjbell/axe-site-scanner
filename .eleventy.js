@@ -25,6 +25,7 @@ module.exports = function(eleventyConfig) {
   // Passthrough the img and js folders
   eleventyConfig.addPassthroughCopy("src/img");
   eleventyConfig.addPassthroughCopy("src/js");
+  eleventyConfig.addPassthroughCopy("src/fonts");
 
   // Multipurpose shortcode for retrieving CURRENT date
   // If format string is left off, date will display in ISO8601
