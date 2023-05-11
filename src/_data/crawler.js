@@ -128,7 +128,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 '.ics',
               ]
               if (link_href && excludeExtensions.some((ext) => link_href.toLowerCase().endsWith(ext))) {
-                console.log("NOPE: " + link_href + " ends with " + ext);
+                console.log("NOPE: " + link_href + " ends with disallowed extension");
                 link_href=null
               }
 
@@ -143,7 +143,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 'webcal:',
               ]
               if (link_href && excludeProtocols.some((str) => link_href.toLowerCase().startsWith(str))) {
-                console.log("NOPE: " + link_href + " starts with " + str);
+                console.log("NOPE: " + link_href + " starts with disallowed protocol");
                 link_href=null
               }
 
