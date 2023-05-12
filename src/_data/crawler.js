@@ -1,9 +1,7 @@
 const Crawler = require('crawler')
 const {AssetCache} = require("@11ty/eleventy-fetch");
-const dotenv = require('dotenv')
-dotenv.config()
 
-module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, max_pages_to_crawl) {
+module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, max_pages_to_crawl, rate_limit_crawler) {
 
   // Cache the crawl results
   let assetString = `CRAWL ${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`;
@@ -25,8 +23,12 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
     }
   ]
 
+  // Log the rate limit
+  console.log("Crawler rate limit: " + rate_limit_crawler + "ms")
+
   let c = new Crawler({
     maxConnections: 10,
+    rateLimit: rate_limit_crawler,
     retryTimeout: 3000, // Wait 3 seconds before retrying instead of 10
     retries: 1,
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
@@ -66,7 +68,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
 
             console.log("  Queued: "+ c.queueSize +"  Visiting: " + res.request.uri.href)
 
-            console.log($('a').length + " links found on this page")
+            // console.log($('a').length + " links found on this page")
 
             // Find all links on the page
             $('a').each(function () {

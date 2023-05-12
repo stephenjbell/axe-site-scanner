@@ -14,10 +14,11 @@ module.exports = async function () {
   const domainUrl = process.env.DOMAIN_URL || 'https://steedgood.com' // Used to add domain to relative links
   const crawlStartUrl = process.env.CRAWL_START_URL || 'https://steedgood.com/' // Where we begin crawling
   const urlsMustContain = process.env.URLS_MUST_CONTAIN || 'steedgood.com' // Only search links that contain this
-  const site_title = process.env.SCANNED_SITE_TITLE || 'Steed'
   const max_pages_to_crawl = process.env.MAX_PAGES_TO_CRAWL || 5
   const max_pages_to_scan = process.env.MAX_PAGES_TO_SCAN || 3
   const axe_scan_tags = process.env.AXE_SCAN_TAGS || "wcag2a,wcag2aa,wcag21a,wcag21aa,wcag22aa,section508,best-practice"
+  const rate_limit_scanner = process.env.RATE_LIMIT_SCANNER || 0 // 0 = no rate limit
+  const rate_limit_crawler = process.env.RATE_LIMIT_CRAWLER || 0 // 0 = no rate limit
 
   // Get the axe tags for tests from the environment variable, and format it to feed to axe.run()
   let run_only_scan_tags = ""
@@ -49,7 +50,7 @@ module.exports = async function () {
   // Get list of urls using crawlSite()
   let pages
   try {
-    pages = await crawler.crawlSite(domainUrl, crawlStartUrl, urlsMustContain, max_pages_to_crawl)
+    pages = await crawler.crawlSite(domainUrl, crawlStartUrl, urlsMustContain, max_pages_to_crawl, rate_limit_crawler)
   } catch (error) {
     console.error(error)
     return []
@@ -72,6 +73,13 @@ module.exports = async function () {
 
   // Loop through each page URL
   for (const page of pages) {
+
+    if(rate_limit_scanner > 0){
+      // Delay number of milliseconds between each page load
+      console.log(`(Delaying ${rate_limit_scanner}ms...)`)
+      await new Promise(resolve => setTimeout(resolve, rate_limit_scanner))
+    }
+
     const url = page.url
 
     // Create a slug from the URL using the slugify filter. Leave off the protocol and trailing slash
