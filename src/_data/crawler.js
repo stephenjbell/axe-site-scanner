@@ -65,36 +65,36 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
               // Get the link href
               let link_href = $(this).attr('href')
 
-              console.log("-----");
-              console.log("Link: "+link_href);
+              // console.log("-----");
+              // console.log("Link: "+link_href);
 
               // If the link starts with //, add "https:"
               if (link_href && link_href.startsWith('//')) {
-                console.log("Adding https: to " + link_href)
+                // console.log("Adding https: to " + link_href)
                 link_href = "https:" + link_href
               }
 
               // If the link starts with /, add the domain url
               if (link_href && link_href.startsWith('/')) {
-                console.log("Adding domainUrl to " + link_href)
+                // console.log("Adding domainUrl to " + link_href)
                 link_href = domainUrl + link_href
               }
 
               // If the link doesn't include urlsMustContain, exclude it
               if (link_href && !link_href.includes(urlsMustContain)) {
-                console.log("NOPE: " + link_href + " doesn't include " + urlsMustContain);
+                // console.log("NOPE: " + link_href + " doesn't include " + urlsMustContain);
                 link_href=null
               }
 
               // If the link starts with #, exclude it
               if (link_href && link_href.startsWith('#')) {
-                console.log("NOPE: " + link_href + " starts with #");
+                // console.log("NOPE: " + link_href + " starts with #");
                 link_href=null
               }
 
               // Strip off anything after a hash
               if (link_href && link_href.indexOf('#') > -1) {
-                console.log("Stripping off anything after a #")
+                // console.log("Stripping off anything after a #")
                 link_href = link_href.substring(0, link_href.indexOf('#'))
               }
 
@@ -128,7 +128,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 '.ics',
               ]
               if (link_href && excludeExtensions.some((ext) => link_href.toLowerCase().endsWith(ext))) {
-                console.log("NOPE: " + link_href + " ends with disallowed extension");
+                // console.log("NOPE: " + link_href + " ends with disallowed extension");
                 link_href=null
               }
 
@@ -143,7 +143,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
                 'webcal:',
               ]
               if (link_href && excludeProtocols.some((str) => link_href.toLowerCase().startsWith(str))) {
-                console.log("NOPE: " + link_href + " starts with disallowed protocol");
+                // console.log("NOPE: " + link_href + " starts with disallowed protocol");
                 link_href=null
               }
 
