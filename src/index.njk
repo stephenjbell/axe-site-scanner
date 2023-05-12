@@ -21,10 +21,11 @@ layout: 'layouts/base.njk'
                     Accessibility Scan
                 </div>
             </h1>
-            <a href="{{homepage}}" class="sitelink">{{homepage_domain}}</a>
+            <a href="{{homepage}}" class="sitelink">{{scanner.displayUrl}}</a>
             <time datetime="{% nowdate "YYYY-MM-DDTHH:mm:ssZ[Z]" %}">
-                Scanned {{ scanner.resultPages|length }} pages on {% nowdate "MMM. D, YYYY" %}
+                Scanned {{ scanner.resultPages|length }} pages on {% nowdate "MMM D, YYYY" %}
             </time>
+            <!-- {{scanner.connectionIssues|dump|safe}} -->
 
             {%- set pageCount = scanner.resultPages|length -%}
 

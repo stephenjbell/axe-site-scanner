@@ -65,6 +65,7 @@ module.exports = async function () {
   const axeResults = {
     crawledPages: pages,
     resultPages: [],
+    connectionIssues: {},
     violationsTotal: 0,
     incompleteTotal: 0,
   }
@@ -96,8 +97,16 @@ module.exports = async function () {
       const pageInstance = await browser.newPage()
       const response = await pageInstance.goto(url)
 
+
       if (response.status() !== 200) {
-        console.warn(`Received status code ${response.status()} for ${url}.`)
+        console.warn(`Received status code ${response.status()} for ${url}`)
+        
+        // Tally up the connection issues to send to summary.json
+        if(axeResults.connectionIssues[response.status()]){
+          axeResults.connectionIssues[response.status()]++
+        } else {
+          axeResults.connectionIssues[response.status()] = 1
+        }
 
         // Fail - Don't scan the page if we don't get a 200 response
         continue

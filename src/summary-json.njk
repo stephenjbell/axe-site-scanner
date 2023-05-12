@@ -28,5 +28,6 @@ permalink: 'summary.json'
     {% for violation in scanner.violationsSummary -%}
       { "help":"{{violation.help}}","count":{{violation.count}} } {%- if not loop.last %},{% endif %}
     {% endfor %}
-  ]
+  ],
+  "connection_issues":{{scanner.connectionIssues|dump|safe}}
 }
