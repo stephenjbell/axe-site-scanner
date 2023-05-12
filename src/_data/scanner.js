@@ -103,6 +103,8 @@ module.exports = async function () {
       // Get new page
       console.time(`--Scanned ${url}`)
       const pageInstance = await browser.newPage()
+      // Set navigation timeout to 15 seconds instead of the default (30) to keep us from using up Netlify minutes
+      await pageInstance.setDefaultNavigationTimeout(15000)
       const response = await pageInstance.goto(url)
 
 
