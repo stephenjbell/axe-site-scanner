@@ -66,4 +66,11 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('code').forEach((code) => {
     code.setAttribute('tabindex', 0)
   })
+
+  // If the current page isn't currently located on the domain "clearcut.steedgood.com,"
+  // then remove the base href with the subfolder
+  if (window.location.hostname !== 'clearcut.steedgood.com') {
+    document.querySelector('base').setAttribute('href', '')
+  }
+
 })
