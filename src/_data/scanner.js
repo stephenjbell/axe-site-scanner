@@ -105,7 +105,7 @@ module.exports = async function () {
       console.time(`Completed ${url}`)
       const pageInstance = await browser.newPage()
       // Set navigation timeout to 15 seconds instead of the default (30) to keep us from using up Netlify minutes
-      await pageInstance.setDefaultNavigationTimeout(45000)
+      await pageInstance.setDefaultNavigationTimeout(15000)
       const response = await pageInstance.goto(url)
 
       // Log if we get redirected
@@ -113,6 +113,13 @@ module.exports = async function () {
         console.warn(`--> ${response.url()}`)
       }
 
+      // Check if response.url is part of the site we should be scanning
+      if (!response.url().includes(urlsMustContain)) {
+        console.warn(`URL does not contain ${urlsMustContain}`)
+        continue
+      }
+
+      // Check for connection issues
       if (response.status() !== 200) {
         console.warn(`Received status code ${response.status()} for ${url}`)
         
