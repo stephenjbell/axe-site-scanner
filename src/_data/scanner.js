@@ -41,7 +41,7 @@ module.exports = async function () {
   let asset = new AssetCache( assetString );
 
   // check if the cache is fresh within the last day
-  if(asset.isCacheValid("1d")) {
+  if(asset.isCacheValid("1s")) {
     // return cached data.
     console.log("Loading scanner data from cache...")
     return asset.getCachedValue(); // a promise
@@ -81,6 +81,7 @@ module.exports = async function () {
     }
 
     const url = page.url
+    console.log("\nSCANNING PAGE:",page.url)
 
     // Create a slug from the URL using the slugify filter. Leave off the protocol and trailing slash
     let slug = url.replace(/^https?:\/\//, '').replace(/\/$/, '')
@@ -101,12 +102,16 @@ module.exports = async function () {
       }
 
       // Get new page
-      console.time(`--Scanned ${url}`)
+      console.time(`Completed ${url}`)
       const pageInstance = await browser.newPage()
       // Set navigation timeout to 15 seconds instead of the default (30) to keep us from using up Netlify minutes
-      await pageInstance.setDefaultNavigationTimeout(15000)
+      await pageInstance.setDefaultNavigationTimeout(45000)
       const response = await pageInstance.goto(url)
 
+      // Log if we get redirected
+      if(response.url !== url){
+        console.warn(`--> ${response.url()}`)
+      }
 
       if (response.status() !== 200) {
         console.warn(`Received status code ${response.status()} for ${url}`)
@@ -142,7 +147,7 @@ module.exports = async function () {
         }
       })
 
-      console.log(pageH1)
+      console.log("H1:",pageH1)
 
       // Inject and run axe-core
       // Set options using https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter
@@ -192,10 +197,11 @@ module.exports = async function () {
         results,
       })
 
-      console.timeEnd(`--Scanned ${url}`)
+      console.timeEnd(`Completed ${url}`)
 
     } catch (err) {
       console.error(`Error running axe-core for ${url}:`, err.message)
+      console.timeEnd(`Completed ${url}`)
     }
   }
 
