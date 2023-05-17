@@ -81,7 +81,8 @@ module.exports = async function () {
     }
 
     const url = page.url
-    console.log("\nSCANNING PAGE:",page.url)
+    console.log(" ") // Add a blank line for readability
+    console.log("SCANNING PAGE:",page.url)
 
     // Create a slug from the URL using the slugify filter. Leave off the protocol and trailing slash
     let slug = url.replace(/^https?:\/\//, '').replace(/\/$/, '')
