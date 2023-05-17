@@ -64,7 +64,7 @@ permalink: 'page/{{page.slug}}/index.html'
                   <dl>
                       {% for issue in violations %}
                           <dt>
-                              <a href="{{page.url}}#violation-{{issue.id|slugify}}">
+                              <a href="/{{env.SCANNED_SITE_TITLE|slug}}{{page.url}}#violation-{{issue.id|slugify}}">
                                   {{issue.help}}
                               </a>
                           </dt>
@@ -199,7 +199,7 @@ permalink: 'page/{{page.slug}}/index.html'
                   <dl>
                       {% for issue in incomplete %}
                           <dt>
-                              <a href="{{page.url}}#incomplete-{{issue.id|slugify}}">
+                              <a href="/{{env.SCANNED_SITE_TITLE|slug}}{{page.url}}#incomplete-{{issue.id|slugify}}">
                                   {{issue.help}}
                               </a>
                           </dt>
