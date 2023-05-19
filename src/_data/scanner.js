@@ -6,6 +6,7 @@ const {AssetCache} = require("@11ty/eleventy-fetch");
 const slugify = require('@sindresorhus/slugify')
 const dotenv = require('dotenv')
 dotenv.config()
+const sharp = require('sharp');
 
 
 module.exports = async function () {
@@ -137,6 +138,30 @@ module.exports = async function () {
 
       // Get page title element 
       const pageTitle = await pageInstance.title()
+
+      // Create screenshot of first page
+      if(page.url === crawlStartUrl){
+        // Create screenshot of page
+        let options = {
+          type: "jpeg",
+          quality: 80,
+          fullPage: false,
+          captureBeyondViewport: false,
+          clip: {
+            x: 0,
+            y: 0,
+            width: 800, 
+            height: 600,
+          }
+        };
+        await pageInstance.screenshot(options).then(function (data) {
+          console.log("Creating screenshot of", url, "...")
+          // resize screenshot to 400x300 using sharp, then save as "./dist/img/screenshot.jpg" and "./dist/img/screenshot.webp"
+          sharp(data).resize(400, 300).toFile('./dist/img/screenshot.jpg').then(function() {
+            sharp(data).resize(400, 300).toFile('./dist/img/screenshot.webp')
+          });
+        });
+      }
 
       // Try to get title of the page from the H1 element if it exists, otherwise fall back to "No H1"
       const pageH1 = await pageInstance.evaluate(() => {
