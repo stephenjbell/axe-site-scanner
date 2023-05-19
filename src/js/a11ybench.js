@@ -70,7 +70,9 @@ window.addEventListener('DOMContentLoaded', () => {
   // If the current page isn't currently located on the domain "clearcut.steedgood.com,"
   // then remove the base href with the subfolder
   if (window.location.hostname !== 'clearcut.steedgood.com') {
-    document.querySelector('base').setAttribute('href', '')
+    console.log("Visiting from not clearcut.steedgood.com domain")
+    // remove <base> element
+    document.querySelector('base').remove()
   }
 
 })
