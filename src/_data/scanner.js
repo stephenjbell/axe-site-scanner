@@ -106,6 +106,12 @@ module.exports = async function () {
       // Get new page
       console.time(`Completed ${url}`)
       const pageInstance = await browser.newPage()
+
+      const pageSize = [800,800]
+      await pageInstance.setViewport({
+        width: pageSize[0],
+        height: pageSize[1]
+      });
       // Set navigation timeout to 15 seconds instead of the default (30) to keep us from using up Netlify minutes
       await pageInstance.setDefaultNavigationTimeout(15000)
       const response = await pageInstance.goto(url)
@@ -150,15 +156,19 @@ module.exports = async function () {
           clip: {
             x: 0,
             y: 0,
-            width: 800, 
-            height: 600,
+            width: pageSize[0], 
+            height: pageSize[1],
           }
         };
         await pageInstance.screenshot(options).then(function (data) {
-          console.log("Creating screenshot of", url, "...")
-          // resize screenshot to 400x300 using sharp, then save as "./dist/img/screenshot.jpg" and "./dist/img/screenshot.webp"
-          sharp(data).resize(400, 300).toFile('./dist/img/screenshot.jpg').then(function() {
-            sharp(data).resize(400, 300).toFile('./dist/img/screenshot.webp')
+          console.time("Creating screenshot of " + url)
+          // resize screenshot to 400x300 using sharp, then save as "./dist/img/screenshot.jpg" and "./dist/img/screenshot.webp" and "./dist/img/screenshot.avif"
+          sharp(data).resize(400, 400).toFile('./dist/img/screenshot.jpg').then(function() {
+            sharp(data).resize(400, 400).toFile('./dist/img/screenshot.webp').then(function() {
+              sharp(data).resize(400, 400).toFile('./dist/img/screenshot.avif').then(function() {
+                console.timeEnd("Creating screenshot of " + url)
+              });
+            });
           });
         });
       }
