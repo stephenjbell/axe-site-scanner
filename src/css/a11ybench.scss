@@ -161,7 +161,7 @@ h5 { font-size:calc(20/16) + rem; }
 
 code {
     display:block;
-    padding:1rem;
+    padding:14px;
     font-size:1rem !important;
     font-family:monospace;
     border-radius:0.5rem;
@@ -169,6 +169,7 @@ code {
     overflow:scroll;
     max-height:80px;
     background-color:#4a4a4a;
+    border:2px solid #4a4a4a;
     color:#fff;
     // turn wordwrap on
     white-space:normal !important;
@@ -180,6 +181,8 @@ code {
     &.light {
         background-color:#fff;
         color:$purpledark;
+        border:2px solid #fff;
+        white-space:nowrap !important;
     }
 }
 
