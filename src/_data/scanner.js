@@ -73,7 +73,8 @@ module.exports = async function () {
   }
 
   // Loop through each page URL
-  for (const page of pages) {
+  for(let i = 0; i < pages.length; i++) {
+    const page = pages[i];
 
     if(rate_limit_scanner > 0){
       // Delay number of milliseconds between each page load
@@ -83,7 +84,7 @@ module.exports = async function () {
 
     const url = page.url
     console.log(" ") // Add a blank line for readability
-    console.log("SCANNING PAGE:",page.url)
+    console.log(`(${i+1}/${pages.length})`,"SCANNING PAGE:",page.url)
 
     // Create a slug from the URL using the slugify filter. Leave off the protocol and trailing slash
     let slug = url.replace(/^https?:\/\//, '').replace(/\/$/, '')
