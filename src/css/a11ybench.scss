@@ -166,16 +166,15 @@ code {
     font-family:monospace;
     border-radius:0.5rem;
     width:100%;
-    overflow-x:scroll;
-    max-height:200px;
+    overflow:scroll;
+    max-height:80px;
     background-color:#4a4a4a;
     color:#fff;
     // turn wordwrap on
-    white-space:wrap !important;
+    white-space:normal !important;
 
-    // Hide horizontal scrollbar
-    &::-webkit-scrollbar {
-        display:none;
+    &:focus {
+        outline-color:#ff4287;
     }
 
     &.light {
@@ -1738,7 +1737,6 @@ ul.issues {
             color:#fff;
             border-radius:0.5rem;
             word-break: break-all;
-            
         }
     }
 }

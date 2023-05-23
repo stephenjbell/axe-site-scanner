@@ -67,6 +67,11 @@ window.addEventListener('DOMContentLoaded', () => {
     code.setAttribute('tabindex', 0)
   })
 
+  // If a <pre> tag contains a <code> tag, remove the tabindex attribute from the <pre> tag
+  document.querySelectorAll('pre code').forEach((code) => {
+    code.parentNode.removeAttribute('tabindex')
+  })
+
   // If the current page isn't currently located on the domain "clearcut.steedgood.com,"
   // then remove the base href with the subfolder
   if (window.location.hostname !== 'clearcut.steedgood.com') {
