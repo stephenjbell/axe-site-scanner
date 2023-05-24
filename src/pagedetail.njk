@@ -39,7 +39,7 @@ permalink: 'page/{{page.slug}}/index.html'
   <div class="tabs">
     <div class="tabs-issuetype" role="tablist" aria-label="Issues">
         <button class="violations" role="tab" aria-selected="true" aria-controls="violations-panel" id="tab-1" tabindex="0">
-            {{violationcount}} Violations
+            {{violationcount}} Known Issues
         </button>
         <button class="incomplete" role="tab" aria-selected="false" aria-controls="incomplete-panel" id="tab-2" tabindex="-1">
             {{incompletecount}} Needs Review
@@ -55,16 +55,16 @@ permalink: 'page/{{page.slug}}/index.html'
       >
 
         <div class="intro">
-            <p><strong>Violations</strong> - These issues have been flagged as problematic by Axe, our accessibility scanner. Axe's "no false positives" philosophy means that if it's shown here, it's likely a problem to someone.</p>
+            <p><strong>Known Issues</strong> - These "violations" have been flagged as problematic by Axe, our accessibility scanner. Axe's "no false positives" philosophy means that if it's shown here, it's likely a problem to someone.</p>
         </div>
 
           <div class="wrapper">
-              <h2>Violations Summary</h2>
+              <h2>Known Issues Summary</h2>
               {% if violations.length %}
                   <dl>
                       {% for issue in violations %}
                           <dt>
-                              <a href="/{{env.SCANNED_SITE_TITLE|slug}}{{page.url}}#violation-{{issue.id|slugify}}">
+                              <a href="#violation-{{issue.id|slugify}}">
                                   {{issue.help}}
                               </a>
                           </dt>
@@ -87,7 +87,7 @@ permalink: 'page/{{page.slug}}/index.html'
           <section class="issuelist">
               <div class="wrapper">
                   <h2>
-                      Violations on This Page
+                      Known Issues on This Page
                   </h2>
 
                   {% for issue in violations %}
@@ -199,7 +199,7 @@ permalink: 'page/{{page.slug}}/index.html'
                   <dl>
                       {% for issue in incomplete %}
                           <dt>
-                              <a href="/{{env.SCANNED_SITE_TITLE|slug}}{{page.url}}#incomplete-{{issue.id|slugify}}">
+                              <a href="#incomplete-{{issue.id|slugify}}">
                                   {{issue.help}}
                               </a>
                           </dt>

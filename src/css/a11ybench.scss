@@ -983,7 +983,7 @@ section.breakdown {
                 .quantity {
                     grid-area:quantity;
                     font-weight:bold;
-                    padding-left:1rem;
+                    padding-left:0.5rem;
 
                     // &:before {
                     //     content:'• ';
@@ -1441,7 +1441,7 @@ section.pagelist {
         border-top:2px solid transparent;
         border-bottom:2px solid $purpledark;
         color:$purpledark;
-        font-size:calc(28/16) + rem;
+        font-size:calc(24/16) + rem;
         padding:0.5rem;
         border-radius:0.5rem 0.5rem 0 0;
 

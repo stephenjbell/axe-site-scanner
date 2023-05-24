@@ -11,9 +11,9 @@ layout: 'layouts/base.njk'
     <div class="wrapper">
         <div class="imgcol">
             <picture>
-                <source srcset="img/screenshot.avif" type="image/avif">
-                <source srcset="img/screenshot.webp" type="image/webp">
-                <img src="img/screenshot.jpg" alt="Screenshot of {{env.SCANNED_SITE_TITLE}}">
+                <source srcset="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/img/screenshot.avif" data-other-srcset="/img/screenshot.avif" type="image/avif">
+                <source srcset="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/img/screenshot.webp" data-other-srcset="/img/screenshot.webp" type="image/webp">
+                <img src="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/img/screenshot.jpg" data-other-src="/img/screenshot.jpg" alt="Screenshot of {{env.SCANNED_SITE_TITLE}}">
             </picture>
         </div>
         <div class="textcol">
@@ -47,7 +47,7 @@ layout: 'layouts/base.njk'
 
             <div class="summary">
                 <div class="item violations text">
-                    <span class="number">{{violationsPerPage|round(1)}}</span> <span class="label">Violations/Page</span>
+                    <span class="number">{{violationsPerPage|round(1)}}</span> <span class="label">Known Issues/Page</span>
                 </div>
                 <div class="item incomplete text">
                     <span class="number">{{incompletePerPage|round(1)}}</span> <span class="label">"Needs Review"/Page</span>
@@ -67,7 +67,7 @@ layout: 'layouts/base.njk'
 <section class="breakdown" style="--first-quantity:{{countPerFirstPage|round(2)}};--first-chars:{{charsForFirstPage}}ch;">
 
     <div class="wrapper">
-        <h2>Site Violations Summary</h2>
+        <h2>Site Known Issues Summary</h2>
         <dl>
 
             {% for violation in scanner.violationsSummary %}
@@ -95,7 +95,10 @@ layout: 'layouts/base.njk'
         <ol class="pageol">
             {% for page in scanner.resultPages|sort(true, false, 'results.violationCountOnPage') %}
                 <li>
-                    <a href="page/{{page.slug}}/">
+                    <a 
+                        href="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/page/{{page.slug}}/"
+                        data-other-href="page/{{page.slug}}/"
+                    >
                         <div class="textcol">
                             <h3>{{ page.pageH1 }}</h3>
                             <div class="url">
@@ -106,11 +109,11 @@ layout: 'layouts/base.njk'
                         
                         <div class="errors">
                             <div class="number">{{page.results.violationCountOnPage}}</div>
-                            <div class="text">Violations</div>
+                            <div class="text">Known Issues</div>
                         </div>
 
                         <div class="warningsnotices">
-                            {{page.results.violationCountOnPage}}&nbsp;Violations,
+                            {{page.results.violationCountOnPage}}&nbsp;Known Issues,
                             {{page.results.incompleteCountOnPage}}&nbsp;Needs Review
                         </div>
 
