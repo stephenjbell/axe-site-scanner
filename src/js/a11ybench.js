@@ -72,12 +72,31 @@ window.addEventListener('DOMContentLoaded', () => {
     code.parentNode.removeAttribute('tabindex')
   })
 
-  // If the current page isn't currently located on the domain "clearcut.steedgood.com,"
-  // then remove the base href with the subfolder
+  // Adjust URLs if we're not using the clearcut.steedgood.com domain
   if (window.location.hostname !== 'clearcut.steedgood.com') {
-    console.log("Visiting from not clearcut.steedgood.com domain")
-    // remove <base> element
-    document.querySelector('base').remove()
+
+    console.log("Adjusting URLs for not clearcut.steedgood.com domain")
+
+    // Get every <a> with a data-other-href attribute and make it the href
+    document.querySelectorAll('a[data-other-href]').forEach((a) => {
+      a.setAttribute('href', a.getAttribute('data-other-href'))
+    })
+
+    // Get every <img> with a data-other-src attribute and make it the src
+    document.querySelectorAll('img[data-other-src]').forEach((img) => {
+      img.setAttribute('src', img.getAttribute('data-other-src'))
+    })
+
+    // Get every <source> in <picture> with a data-other-srcset attribute and make it the srcset
+    document.querySelectorAll('picture source[data-other-srcset]').forEach((source) => {
+      source.setAttribute('srcset', source.getAttribute('data-other-srcset'))
+    })
+
+    // Stylesheets - Get every <link> rel="stylesheet" with a data-other-href attribute and make it the href
+    document.querySelectorAll('link[rel="stylesheet"][data-other-href]').forEach((link) => {
+      link.setAttribute('href', link.getAttribute('data-other-href'))
+    })
+
   }
 
 })
