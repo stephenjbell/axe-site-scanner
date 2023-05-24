@@ -90,6 +90,11 @@ module.exports = async function () {
     let slug = url.replace(/^https?:\/\//, '').replace(/\/$/, '')
     slug = slugify(slug)
 
+    // If axeResults.resultPages already has this slug, skip it
+    if(axeResults.resultPages.find(x => x.slug === slug)){
+      console.log("Skipping page because we already have results for it")
+      continue
+    }
 
     // Validate URL
     if (!parseURL(url).protocol || !parseURL(url).host) {
