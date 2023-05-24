@@ -50,12 +50,12 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
           let blocked = false;
           if($('html').text().includes("Incapsula incident")) {
             blocked = true;
-            console.log("BLOCKED:",$('html').text())
+            console.log("Incapsula detected in page text")
           }
 
           if($('html').text().includes("Cloudflare")) {
             blocked = true;
-            console.log("BLOCKED:",$('html').text())
+            console.log("Cloudflare detected in page text")
           }
 
           // Check if this is a React app that we'll have a hard time crawling
