@@ -92,7 +92,6 @@ permalink: 'page/{{page.slug}}/index.html'
 
                   {% for issue in violations %}
                       <div class="issue" id="violation-{{issue.id|slugify}}">
-
                           <h3>
                               {{issue.help}}
                           </h3>
@@ -121,6 +120,13 @@ permalink: 'page/{{page.slug}}/index.html'
                               <ol class="occurrences">
 
                                   {% for node in issue.nodes %}
+
+                                    {% set ancestry = node.ancestry[0] %}
+
+                                    {% if " main" in ancestry %}
+                                        <!-- This issue is in "<main>" -->
+                                    {% endif %}
+
                                     <li>
                                         <pre><code class="language-html">
                                             {#- Replace whitespace w/ single space -#}

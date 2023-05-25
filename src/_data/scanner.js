@@ -207,6 +207,7 @@ module.exports = async function () {
         axe.run({
             reporter: 'v2',
             resultTypes: ['violations','incomplete'],
+            ancestry: true,
             ${run_only_scan_tags}
         })
       `)
