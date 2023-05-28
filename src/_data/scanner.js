@@ -57,11 +57,14 @@ module.exports = async function () {
     return []
   }
 
-  // Setup Puppeteer
-  const browser = await puppeteer.launch({
+  // Set puppeteer options
+  const puppeteerOptions = {
     headless: 'new',
     defaultArgs: ['--no-sandbox', '--disable-setuid-sandbox', '--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36']
-  })
+  }
+
+  // Setup Puppeteer
+  let browser = await puppeteer.launch(puppeteerOptions)
 
   // Array to hold axe results for each URL
   const axeResults = {
@@ -73,7 +76,15 @@ module.exports = async function () {
   }
 
   // Loop through each page URL
-  for(let i = 0; i < pages.length; i++) {
+  for (let i = 0; i < pages.length; i++) {
+
+    // Relaunch the browser every few pages to keep it from getting too slow
+    if ((i + 1) % 50 === 0) {
+      console.log(`Relaunching browser after ${i + 1} pages...`)
+      await browser.close()
+      browser = await puppeteer.launch(puppeteerOptions)
+    }
+
     const page = pages[i];
 
     if(rate_limit_scanner > 0){
