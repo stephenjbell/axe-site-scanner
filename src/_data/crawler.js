@@ -51,7 +51,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
 
           // Check if the URL has redirected or returned a 404 status
           if(res.statusCode != 200){
-            console.log("ERROR: Status code on startCrawlUrl page: ",res.statusCode)
+            console.log("ERROR: Status code on crawlStartUrl page: ",res.statusCode)
           }
 
           // Figure out if we're being blocked by Cloudflare or Incapsula
@@ -71,8 +71,17 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
             console.log("REACT APP?: ",$('html').text())
           }
 
+          // Check if res.request.uri.href begins with "http://" or "https://" and then urlsMustContain
+          let urlStartsWith = false
+          let urlStartsWith1 = "https://" + urlsMustContain
+          let urlStartsWith2 = "http://" + urlsMustContain
+          // Check if res.request.uri.href starts with either of the two strings
+          if(res.request.uri.href.startsWith(urlStartsWith1) || res.request.uri.href.startsWith(urlStartsWith2)){
+            urlStartsWith = true
+          }
+
           // Check if the URL has redirected or returned a 404 status
-          if (res.statusCode === 200 && res.request.uri.href.includes(urlsMustContain) && !res.request.uri.href.includes('/404') && !blocked) {
+          if (res.statusCode === 200 && urlStartsWith && !res.request.uri.href.includes('/404') && !blocked) {
 
             console.log("  Queued: "+ c.queueSize +"  Visiting: " + res.request.uri.href)
 
