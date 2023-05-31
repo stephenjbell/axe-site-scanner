@@ -7,8 +7,13 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
   let assetString = `CRAWL ${domainUrl} ${crawlStartUrl} ${urlsMustContain} ${max_pages_to_crawl}`;
   let asset = new AssetCache( assetString );
 
+  // If domainUrl ends with a slash, remove it so we don't double up
+  if(domainUrl.endsWith('/')){
+    domainUrl = domainUrl.substring(0, domainUrl.length - 1)
+  }
+
   // check if the cache is fresh within the last day
-  if(asset.isCacheValid("1d")) {
+  if(asset.isCacheValid("1s")) {
     // return cached data.
     console.log("Loading crawler data from cache...")
     return asset.getCachedValue(); // a promise
@@ -37,6 +42,9 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
         console.log(error)
       } else {
         var $ = res.$
+
+        // Get the URL of the current folder from the URL of the current page, ending with a slash
+        let currentFolderUrl = res.request.uri.href.substring(0, res.request.uri.href.lastIndexOf('/') + 1)
 
         // Check if the response is a valid HTML document
         if (/^text\/html/.test(res.headers['content-type'])) {
@@ -76,8 +84,7 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
               // Get the link href
               let link_href = $(this).attr('href')
 
-              // console.log("-----");
-              // console.log("Link: "+link_href);
+              console.log("-----");
 
               // If the link starts with //, add "https:"
               if (link_href && link_href.startsWith('//')) {
@@ -89,6 +96,12 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
               if (link_href && link_href.startsWith('/')) {
                 // console.log("Adding domainUrl to " + link_href)
                 link_href = domainUrl + link_href
+              }
+
+              // If link_url matches doesn't match regex showing that it has a protocol, add the current folder URL
+              if (link_href && !link_href.match(/^([a-zA-Z0-9]+):/)) {
+                // console.log("Fixing relative URL: " + currentFolderUrl + " + " + link_href)
+                link_href = currentFolderUrl + link_href
               }
 
               // If the link doesn't include urlsMustContain, exclude it
