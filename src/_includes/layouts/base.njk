@@ -72,6 +72,37 @@
         {% endblock %}
     </main>
 
+	{% if hide_ctas != true %}
+	<aside class="ctas">
+		<div class="wrapper">
+			<h2>Need some accessibility help?</h2>
+			<div class="boxes">
+				<div class="box">
+					<h3>Fix our detected issues</h3>
+					<p>Let’s take a few hours and patch up your most obvious problems.</p>
+					<div class="buttonholder">
+						<a href="https://clearcut.steedgood.com/contact/" class="button">Fix our issues</a>
+					</div>
+				</div>
+				<div class="box">
+					<h3>Audit by a real, human expert</h3>
+					<p>Automated tools can only catch about 50% of accessibility problems. Let an accessibility expert navigate through the most important pages of your site to find issues affecting your visitors.</p>
+					<div class="buttonholder">
+						<a href="https://clearcut.steedgood.com/contact/" class="button">Audit our site</a>
+					</div>
+				</div>
+				<div class="box">
+					<h3>Redesign our website</h3>
+					<p>If it’s time to start over, let our team help. More than just accessibility compliance, we’re committed to the best experience for your visitors.</p>
+					<div class="buttonholder">
+						<a href="https://clearcut.steedgood.com/contact/" class="button">Redesign our site</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</aside>
+	{% endif %}
+
 	<footer class="bottom">
 		<div class="logo">
 			<a href="https://clearcut.steedgood.com">Clear-Cut Accessibility Benchmarks</a>
