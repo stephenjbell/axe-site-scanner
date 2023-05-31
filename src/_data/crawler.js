@@ -84,8 +84,6 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
               // Get the link href
               let link_href = $(this).attr('href')
 
-              console.log("-----");
-
               // If the link starts with //, add "https:"
               if (link_href && link_href.startsWith('//')) {
                 // console.log("Adding https: to " + link_href)
