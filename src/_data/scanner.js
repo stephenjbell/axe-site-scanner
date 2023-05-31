@@ -75,6 +75,8 @@ module.exports = async function () {
     incompleteTotal: 0,
   }
 
+  let screenshotTaken = false
+
   // Loop through each page URL
   for (let i = 0; i < pages.length; i++) {
 
@@ -188,6 +190,8 @@ module.exports = async function () {
             });
           });
         });
+
+        screenshotTaken = true
       }
 
       // Try to get title of the page from the H1 element if it exists, otherwise fall back to "No H1"
@@ -264,6 +268,17 @@ module.exports = async function () {
       console.error(`Error running axe-core for ${url}:`, err.message)
       console.timeEnd(`Completed ${url}`)
     }
+  }
+
+  // If screenshotTaken is false, save img/defaultscreenshot.png as screenshot.jpg and screenshot.webp and screenshot.avif
+  if(!screenshotTaken){
+    sharp('./src/img/defaultscreenshot.png').resize(400, 400).toFile('./dist/img/screenshot.jpg').then(function() {
+      sharp('./src/img/defaultscreenshot.png').resize(400, 400).toFile('./dist/img/screenshot.webp').then(function() {
+        sharp('./src/img/defaultscreenshot.png').resize(400, 400).toFile('./dist/img/screenshot.avif').then(function() {
+          console.log("Default screenshot created")
+        });
+      });
+    });
   }
 
   await browser.close()
