@@ -164,8 +164,14 @@ module.exports = async function () {
       // Get page title element 
       const pageTitle = await pageInstance.title()
 
-      // Create screenshot of first page
-      if(page.url === crawlStartUrl){
+      // Create screenshot of first page scanned (which should be crawlStartUrl)
+      if(i == 0){
+
+        console.log("📸 Creating screenshot")
+
+        // Delay 500 milliseconds to give the first page time to load for screenshot
+        await new Promise(resolve => setTimeout(resolve, 500))
+
         // Create screenshot of page
         let options = {
           type: "jpeg",

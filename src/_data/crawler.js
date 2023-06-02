@@ -222,16 +222,19 @@ module.exports = { async crawlSite (domainUrl, crawlStartUrl, urlsMustContain, m
         })
 
         // Remove pages with duplicate URLs, ignoring uppercase/lowercase, including pages with different protocols (http/https)
-        pagesInfo = pagesInfo.filter((page, index, self) =>
-          index === self.findIndex((t) => (
-            t.url.toLowerCase().replace(/https?:\/\//, '') === page.url.toLowerCase().replace(/https?:\/\//, '')
-          ))
-        )
+        // Be sure we're keeping the first duplicate and removing the later ones in the array
+        let seen = new Set();
+        pagesInfo = pagesInfo.filter((page) => {
+          let url = page.url.toLowerCase().replace(/https?:\/\//, '');
+          let duplicate = seen.has(url);
+          seen.add(url);
+          return !duplicate;
+        });
 
-        // Sort pages info to put "innav" pages first, then sort by URL
+        // Sort pages info to put "innav" pages first
         pagesInfo.sort(function(a, b) {
           if (a.innav === b.innav) {
-            return a.url.localeCompare(b.url);
+            return 0;
           }
           else if (a.innav) {
             return -1;
