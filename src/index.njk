@@ -7,13 +7,14 @@ layout: 'layouts/base.njk'
 
     {% set homepage = env.CRAWL_START_URL %}
     {% set homepage_domain = homepage|replace("https://", "")|replace("http://", "") %}
+    {% set sitefolder = env.SCANNED_SITE_TITLE|safe|slugify|replace("amp-","") %}
 
     <div class="wrapper">
         <div class="imgcol">
             <picture>
-                <source srcset="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/img/screenshot.avif" data-other-srcset="/img/screenshot.avif" type="image/avif">
-                <source srcset="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/img/screenshot.webp" data-other-srcset="/img/screenshot.webp" type="image/webp">
-                <img src="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/img/screenshot.jpg" data-other-src="/img/screenshot.jpg" alt="Screenshot of {{env.SCANNED_SITE_TITLE}}">
+                <source srcset="https://clearcut.steedgood.com/{{sitefolder}}/img/screenshot.avif" data-other-srcset="/img/screenshot.avif" type="image/avif">
+                <source srcset="https://clearcut.steedgood.com/{{sitefolder}}/img/screenshot.webp" data-other-srcset="/img/screenshot.webp" type="image/webp">
+                <img src="https://clearcut.steedgood.com/{{sitefolder}}/img/screenshot.jpg" data-other-src="/img/screenshot.jpg" alt="Screenshot of {{env.SCANNED_SITE_TITLE}}">
             </picture>
         </div>
         <div class="textcol">
@@ -96,7 +97,7 @@ layout: 'layouts/base.njk'
             {% for page in scanner.resultPages|sort(true, false, 'results.violationCountOnPage') %}
                 <li>
                     <a 
-                        href="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/page/{{page.slug}}/"
+                        href="https://clearcut.steedgood.com/{{sitefolder}}/page/{{page.slug}}/"
                         data-other-href="page/{{page.slug}}/"
                     >
                         <div class="textcol">

@@ -19,9 +19,11 @@
 		<title>{{title}} | Clear-Cut Accessibility Benchmarks</title>
 	{% endblock %}
 
-	<link rel="stylesheet" href="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/css/normalize.css" data-other-href="/css/normalize.css">
-	<link rel="stylesheet" href="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/css/prism.css" data-other-href="/css/prism.css">
-	<link rel="stylesheet" href="https://clearcut.steedgood.com/{{env.SCANNED_SITE_TITLE|slug}}/css/a11ybench.css" data-other-href="/css/a11ybench.css">
+	{% set sitefolder = env.SCANNED_SITE_TITLE|safe|slugify|replace("amp-","") %}
+
+	<link rel="stylesheet" href="https://clearcut.steedgood.com/{{sitefolder}}/css/normalize.css" data-other-href="/css/normalize.css">
+	<link rel="stylesheet" href="https://clearcut.steedgood.com/{{sitefolder}}/css/prism.css" data-other-href="/css/prism.css">
+	<link rel="stylesheet" href="https://clearcut.steedgood.com/{{sitefolder}}/css/a11ybench.css" data-other-href="/css/a11ybench.css">
 
 	<meta property="og:image" content="https://clearcut.steedgood.com/img/og.png">
 	<meta property="og:image:width" content="1200">
